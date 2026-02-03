@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { analyzeStartup } from "@/lib/agents/orchestrator";
+import { performSecurityCheck, logSecurityEvent } from "@/lib/security/anti-sybil";
 
 // Validation schema
 const CreatePitchSchema = z.object({
@@ -25,6 +26,38 @@ export async function POST(request: NextRequest) {
     
     // Validate input
     const validatedData = CreatePitchSchema.parse(body);
+    
+    // Security check (anti-sybil, anti-spam)
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || undefined;
+    const userAgent = request.headers.get("user-agent") || undefined;
+    
+    const securityCheck = await performSecurityCheck({
+      name: validatedData.name,
+      tagline: validatedData.tagline,
+      description: validatedData.description,
+      founderEmail: validatedData.founderEmail,
+      ip,
+      userAgent,
+    });
+    
+    if (!securityCheck.passed) {
+      // Log security event
+      await logSecurityEvent({
+        type: securityCheck.severity === "high" ? "spam" : "suspicious",
+        email: validatedData.founderEmail,
+        ip,
+        details: securityCheck.issues.join("; "),
+      });
+      
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Security check failed",
+          issues: securityCheck.issues,
+        },
+        { status: 400 }
+      );
+    }
     
     // Create startup in database
     const startup = await prisma.startup.create({

@@ -3,6 +3,8 @@ import { FinancialAnalystAgent, type FinancialAnalysis } from "./financial-analy
 import { TechnicalDDAgent, type TechnicalAnalysis } from "./technical-dd";
 import { MarketResearchAgent, type MarketAnalysis } from "./market-research";
 import { LegalComplianceAgent, type LegalAnalysis } from "./legal-compliance";
+import { BlockchainExpertAgent, type BlockchainAnalysis } from "./industry/blockchain-expert";
+import { selectAgents, getAgentBreakdown, type AgentDefinition } from "./agent-registry";
 import { prisma } from "../prisma";
 
 export interface CompleteAnalysis {
@@ -10,6 +12,16 @@ export interface CompleteAnalysis {
   technical: TechnicalAnalysis;
   market: MarketAnalysis;
   legal: LegalAnalysis;
+  blockchain?: BlockchainAnalysis;
+  industrySpecific?: Record<string, any>;
+  agentBreakdown: {
+    total: number;
+    core: number;
+    industry: number;
+    specialist: number;
+    estimatedCost: number;
+    agents: Array<{ id: string; name: string; capability: string; priority: number }>;
+  };
   synthesis: {
     overallScore: number;
     recommendation: "APPROVED" | "CONDITIONAL" | "REJECTED";
@@ -54,7 +66,14 @@ export class AnalysisOrchestrator {
     const analysisStartedAt = new Date();
     
     try {
-      // 3. Run all agents in parallel
+      // 3. Dynamically select agents based on startup characteristics
+      const selectedAgents = selectAgents(startup);
+      const agentBreakdown = getAgentBreakdown(startup);
+      
+      console.log(`[Orchestrator] Spawning ${agentBreakdown.total} agents for ${startup.name}`);
+      console.log(`[Orchestrator] Cost estimate: $${agentBreakdown.estimatedCost.toFixed(2)}`);
+      
+      // 4. Run core agents (always)
       const [financial, technical, market, legal] = await Promise.all([
         this.runWithTracking(startupId, "FINANCIAL_ANALYST", () => 
           this.financialAgent.analyze(startup)
@@ -69,6 +88,21 @@ export class AnalysisOrchestrator {
           this.legalAgent.analyze(startup)
         ),
       ]);
+      
+      // 5. Run industry-specific agents if needed
+      let blockchain: BlockchainAnalysis | undefined;
+      const industrySpecific: Record<string, any> = {};
+      
+      for (const agent of selectedAgents) {
+        if (agent.capability === "blockchain_analysis") {
+          const blockchainAgent = new BlockchainExpertAgent();
+          blockchain = await this.runWithTracking(startupId, "BLOCKCHAIN_EXPERT", () =>
+            blockchainAgent.analyze(startup)
+          );
+        }
+        // Add more industry agents here as they're implemented
+        // e.g., AI/ML, Healthcare, FinTech, etc.
+      }
       
       // 4. Synthesize results
       const synthesis = this.synthesizeAnalysis(financial, technical, market, legal);
@@ -119,6 +153,9 @@ export class AnalysisOrchestrator {
         technical,
         market,
         legal,
+        blockchain,
+        industrySpecific,
+        agentBreakdown,
         synthesis,
       };
       
