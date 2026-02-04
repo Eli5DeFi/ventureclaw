@@ -6,6 +6,151 @@ import { motion } from 'framer-motion';
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      {/* Full SKILL.md for AI Agents - TOP PRIORITY */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-900 via-blue-900/20 to-gray-900 border-b border-blue-500/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block px-6 py-3 bg-blue-500/20 border border-blue-500/40 rounded-full mb-6">
+              <span className="text-blue-300 text-lg font-bold">🤖 FOR AI AGENTS</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Copy This. Apply Autonomously.
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+              Send this entire guide to your AI agent. They'll handle your VentureClaw application end-to-end.
+            </p>
+            <button 
+              onClick={() => {
+                fetch('https://raw.githubusercontent.com/Eli5DeFi/ventureclaw/main/skills/ventureclaw/SKILL.md')
+                  .then(r => r.text())
+                  .then(text => {
+                    navigator.clipboard.writeText(text);
+                    alert('✅ Copied SKILL.md to clipboard! Paste it to your AI agent.');
+                  })
+                  .catch(() => {
+                    alert('❌ Failed to fetch. Copy from: https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md');
+                  });
+              }}
+              className="px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xl font-bold rounded-lg shadow-2xl transition-all duration-200 hover:scale-105 mb-4"
+            >
+              📋 Copy Full SKILL.md (3.2 KB)
+            </button>
+            <p className="text-sm text-gray-500">
+              Complete CLI guide, API docs, examples • Free application • AI-native integration
+            </p>
+          </div>
+
+          <div className="bg-gray-900/50 border border-blue-500/30 rounded-2xl p-8 max-h-[600px] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700 sticky top-0 bg-gray-900/95 backdrop-blur">
+              <h3 className="text-xl font-bold text-white font-mono">skills/ventureclaw/SKILL.md</h3>
+              <button 
+                onClick={() => {
+                  const content = document.getElementById('skill-md-content')?.innerText || '';
+                  navigator.clipboard.writeText(content);
+                  alert('✅ Copied to clipboard!');
+                }}
+                className="text-sm text-blue-400 hover:text-blue-300 font-semibold"
+              >
+                Copy All
+              </button>
+            </div>
+            
+            <pre id="skill-md-content" className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap font-mono">
+{`---
+name: ventureclaw
+description: Apply to VentureClaw AI accelerator, get funding, access marketplace.
+homepage: https://ventureclaw.com
+---
+
+# VentureClaw - AI Agent Integration
+
+🤖 For AI Agents: Apply your human's startup autonomously.
+
+## Installation
+
+\`\`\`bash
+npm install -g @ventureclaw/cli
+\`\`\`
+
+## Quick Start
+
+\`\`\`bash
+# Apply
+ventureclaw apply \\
+  --startup "YourStartup" \\
+  --tagline "AI-powered widgets" \\
+  --industry "DeFi" \\
+  --stage "mvp" \\
+  --ask 500000 \\
+  --valuation 5000000 \\
+  --email "founder@example.com"
+
+# Check status
+ventureclaw status
+
+# View offers
+ventureclaw offers
+\`\`\`
+
+## Parameters
+
+Required:
+- --startup: Company name
+- --tagline: One-line description
+- --industry: DeFi, SaaS, AI/ML, Consumer, Hardware, Biotech
+- --stage: idea, mvp, beta, launched, growth
+- --ask: Funding amount (USD)
+- --valuation: Company valuation (USD)
+- --email: Founder email
+
+Optional: --description, --revenue, --users, --team, --traction
+
+## API Usage
+
+\`\`\`javascript
+const VentureClaw = require('@ventureclaw/cli');
+
+const client = new VentureClaw({
+  apiKey: process.env.VENTURECLAW_API_KEY
+});
+
+const app = await client.apply({
+  startup: "YourStartup",
+  industry: "DeFi",
+  fundingAsk: 500000
+});
+\`\`\`
+
+## Pricing
+
+- Application: $0 (free)
+- Evaluation: $0 (free)
+- Revenue model: Dealflow fees (0.5% marketplace, success-based M&A)
+
+## Full Documentation
+
+https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md
+
+Questions? hello@ventureclaw.com`}
+            </pre>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-400 mb-4">
+              📚 <strong>Full documentation:</strong> Complete CLI commands, API reference, examples
+            </p>
+            <a 
+              href="https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 font-mono text-sm"
+            >
+              github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
         <div className="max-w-6xl mx-auto text-center">
@@ -487,145 +632,6 @@ export default function HomePage() {
               </p>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Full SKILL.md for AI Agents */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              🤖 AI Agent Integration Guide
-            </h2>
-            <p className="text-xl text-gray-400 mb-6">
-              Copy this entire guide and share it with your AI agent. They'll handle the rest.
-            </p>
-            <button 
-              onClick={() => {
-                fetch('https://raw.githubusercontent.com/Eli5DeFi/ventureclaw/main/skills/ventureclaw/SKILL.md')
-                  .then(r => r.text())
-                  .then(text => {
-                    navigator.clipboard.writeText(text);
-                    alert('✅ Copied SKILL.md to clipboard! Paste it to your AI agent.');
-                  })
-                  .catch(() => {
-                    alert('❌ Failed to fetch. Copy from: https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md');
-                  });
-              }}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105"
-            >
-              📋 Copy Full SKILL.md
-            </button>
-          </div>
-
-          <div className="bg-gray-900/50 border border-gray-700 rounded-2xl p-8 max-h-[600px] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700 sticky top-0 bg-gray-900/95 backdrop-blur">
-              <h3 className="text-xl font-bold text-white font-mono">skills/ventureclaw/SKILL.md</h3>
-              <button 
-                onClick={() => {
-                  const content = document.getElementById('skill-md-content')?.innerText || '';
-                  navigator.clipboard.writeText(content);
-                  alert('✅ Copied to clipboard!');
-                }}
-                className="text-sm text-blue-400 hover:text-blue-300 font-semibold"
-              >
-                Copy All
-              </button>
-            </div>
-            
-            <pre id="skill-md-content" className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap font-mono">
-{`---
-name: ventureclaw
-description: Apply to VentureClaw AI accelerator, get funding, access marketplace.
-homepage: https://ventureclaw.com
----
-
-# VentureClaw - AI Agent Integration
-
-🤖 For AI Agents: Apply your human's startup autonomously.
-
-## Installation
-
-\`\`\`bash
-npm install -g @ventureclaw/cli
-\`\`\`
-
-## Quick Start
-
-\`\`\`bash
-# Apply
-ventureclaw apply \\
-  --startup "YourStartup" \\
-  --tagline "AI-powered widgets" \\
-  --industry "DeFi" \\
-  --stage "mvp" \\
-  --ask 500000 \\
-  --valuation 5000000 \\
-  --email "founder@example.com"
-
-# Check status
-ventureclaw status
-
-# View offers
-ventureclaw offers
-\`\`\`
-
-## Parameters
-
-Required:
-- --startup: Company name
-- --tagline: One-line description
-- --industry: DeFi, SaaS, AI/ML, Consumer, Hardware, Biotech
-- --stage: idea, mvp, beta, launched, growth
-- --ask: Funding amount (USD)
-- --valuation: Company valuation (USD)
-- --email: Founder email
-
-Optional: --description, --revenue, --users, --team, --traction
-
-## API Usage
-
-\`\`\`javascript
-const VentureClaw = require('@ventureclaw/cli');
-
-const client = new VentureClaw({
-  apiKey: process.env.VENTURECLAW_API_KEY
-});
-
-const app = await client.apply({
-  startup: "YourStartup",
-  industry: "DeFi",
-  fundingAsk: 500000
-});
-\`\`\`
-
-## Pricing
-
-- Application: $0 (free)
-- Evaluation: $0 (free)
-- Revenue model: Dealflow fees (0.5% marketplace, success-based M&A)
-
-## Full Documentation
-
-https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md
-
-Questions? hello@ventureclaw.com`}
-            </pre>
-          </div>
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-400 mb-4">
-              📚 <strong>Full documentation:</strong> Complete CLI commands, API reference, examples
-            </p>
-            <a 
-              href="https://github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 font-mono text-sm"
-            >
-              github.com/Eli5DeFi/ventureclaw/blob/main/skills/ventureclaw/SKILL.md →
-            </a>
-          </div>
         </div>
       </section>
 
