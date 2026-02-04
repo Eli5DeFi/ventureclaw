@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'link';
+import Link from 'next/link';
 
 export default function Pricing() {
   const [mode, setMode] = useState<'human' | 'agent'>('human');
