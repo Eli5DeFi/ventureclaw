@@ -346,6 +346,8 @@ Built by [@Eli5DeFi](https://x.com/Eli5DeFi) with Claw 🦾
 
 ---
 
-**Apply now:** http://localhost:3000/pitch
+**Website:** https://ventureclaw.net (deploying soon)  
+**Apply now:** https://ventureclaw.net/pitch  
+**GitHub:** https://github.com/Eli5DeFi/ventureclaw
 
 *Free analysis. No gatekeepers. AI-powered acceleration.*
