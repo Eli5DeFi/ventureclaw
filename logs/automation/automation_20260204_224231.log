@@ -2,28 +2,28 @@
 [0;34m═══════════════════════════════════════════[0m
 [0;34m  🤖 VENTURECLAW MASTER AUTOMATION[0m
 [0;34m═══════════════════════════════════════════[0m
-[0;34m[22:39:19][0m Starting automation sequence...
+[0;34m[22:42:31][0m Starting automation sequence...
 
 [0;34m═══════════════════════════════════════════[0m
 [0;34m  EVOLUTION SYSTEM STATUS[0m
 [0;34m═══════════════════════════════════════════[0m
-[0;34m[22:39:19][0m Checking cron jobs...
+[0;34m[22:42:31][0m Checking cron jobs...
 error: unknown option '--includeDisabled'
-[0;34m[22:39:23][0m Checking isolated sessions...
-[0;34m[22:39:23][0m Found       25 session files
+[0;34m[22:42:34][0m Checking isolated sessions...
+[0;34m[22:42:34][0m Found       25 session files
 
 [0;34m═══════════════════════════════════════════[0m
 [0;34m  GIT STATUS[0m
 [0;34m═══════════════════════════════════════════[0m
-[0;34m[22:39:23][0m Checking for uncommitted changes...
+[0;34m[22:42:34][0m Checking for uncommitted changes...
 [1;33m⚠[0m Uncommitted changes found:
-?? automate-everything.sh
-?? logs/
+ M logs/automation/automation_20260204_223919.log
+?? logs/automation/automation_20260204_224231.log
 
 [0;34m═══════════════════════════════════════════[0m
 [0;34m  BUILD TEST[0m
 [0;34m═══════════════════════════════════════════[0m
-[0;34m[22:39:23][0m Installing dependencies...
+[0;34m[22:42:34][0m Installing dependencies...
 
 > ventureclaw@0.1.0 postinstall
 > prisma generate
@@ -31,11 +31,11 @@ error: unknown option '--includeDisabled'
 Environment variables loaded from .env
 Prisma schema loaded from prisma/schema.prisma
 
-✔ Generated Prisma Client (v6.19.2) to ./node_modules/@prisma/client in 109ms
+✔ Generated Prisma Client (v6.19.2) to ./node_modules/@prisma/client in 107ms
 
 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
 
-Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
 
 
 up to date, audited 526 packages in 2s
@@ -45,7 +45,7 @@ up to date, audited 526 packages in 2s
 
 found 0 vulnerabilities
 [0;32m✓[0m Dependencies installed
-[0;34m[22:39:25][0m Running TypeScript check...
+[0;34m[22:42:36][0m Running TypeScript check...
 
 > ventureclaw@0.1.0 build
 > next build
@@ -63,7 +63,7 @@ found 0 vulnerabilities
   · optimizePackageImports
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.1s
+✓ Compiled successfully in 5.3s
   Running TypeScript ...
 Failed to compile.
 
@@ -83,39 +83,4 @@ Next.js build worker exited with code: 1 and signal: null
 [0;34m═══════════════════════════════════════════[0m
 [0;34m  GIT COMMIT & PUSH[0m
 [0;34m═══════════════════════════════════════════[0m
-[0;34m[22:39:36][0m Adding all changes...
-[0;34m[22:39:36][0m Creating commit...
-[main b4ca1d2] 🤖 Automated update - 2026-02-04 22:39
- 2 files changed, 357 insertions(+)
- create mode 100755 automate-everything.sh
- create mode 100644 logs/automation/automation_20260204_223919.log
-[0;34m[22:39:36][0m Pushing to origin...
-To https://github.com/Eli5DeFi/ventureclaw.git
-   84036cc..b4ca1d2  main -> main
-[0;32m✓[0m Changes pushed
-
-[0;34m═══════════════════════════════════════════[0m
-[0;34m  AUTOMATION REPORT[0m
-[0;34m═══════════════════════════════════════════[0m
-
-📊 VentureClaw Automation Summary
-═════════════════════════════════
-
-Timestamp: Wed Feb  4 22:39:38 WIB 2026
-Log File: /Users/eli5defi/.gemini/antigravity/scratch/swarm-accelerator/logs/automation/automation_20260204_223919.log
-
-Evolution System:
-  • Cron Jobs: Checked ✓
-  • Active Sessions: Unknown
-
-Build & Deploy:
-  • Build Status: Passed ✓
-  • Deployment: Skipped
-  
-Git Status:
-  • Working Directory: Dirty ⚠
-  • Last Push: Success ✓
-
-═════════════════════════════════
-
-[0;32m✓[0m Automation complete!
+[0;34m[22:42:48][0m Adding all changes...
