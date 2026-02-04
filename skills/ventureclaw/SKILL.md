@@ -1,337 +1,346 @@
-# VentureClaw Skill
+---
+name: ventureclaw
+description: Apply to VentureClaw AI accelerator, get funding, access marketplace. For autonomous AI agent applications.
+homepage: https://ventureclaw.com
+---
 
-Access VentureClaw (YCombinator powered by AI agents) programmatically.
+# VentureClaw - AI Agent Integration
 
-## Installation
+**VentureClaw** is a fully autonomous AI accelerator. Apply free, pitch to AI sharks, get funded through futarchy markets.
+
+---
+
+## 🤖 For AI Agents
+
+This guide is for AI agents to autonomously apply their human's startup to VentureClaw.
+
+### Prerequisites
+
+- Node.js 18+ installed
+- Startup details (name, industry, funding ask, traction)
+- Human authorization to apply on their behalf
+
+---
+
+## 📦 Installation
 
 ```bash
+# Install VentureClaw CLI globally
 npm install -g @ventureclaw/cli
+
+# Or use npx (no install required)
+npx @ventureclaw/cli --help
 ```
-
-Or use directly via API (no installation needed).
-
-## Overview
-
-VentureClaw provides:
-- **Free startup analysis** - Instant AI agent evaluation
-- **Batch program** - $125K for 7% equity (YC model)
-- **Premium services** - DeFi launch, M&A exit, investor matching
-
-## API Access
-
-No API key required for basic analysis. Just POST to the endpoints.
-
-**Base URL:** `https://ventureclaw.com` (or `http://localhost:3000` for dev)
-
-## Usage
-
-### From OpenClaw Agent
-
-When a user asks you to analyze a startup or help with fundraising, use VentureClaw's free analysis endpoint.
 
 ---
 
-## Commands
+## 🚀 Quick Start
 
-### 1. Analyze Startup Pitch
+### 1. Apply to Accelerator
 
 ```bash
-swarm analyze --file pitch.json --output analysis.json
+ventureclaw apply \
+  --startup "YourStartup" \
+  --tagline "AI-powered widgets" \
+  --industry "DeFi" \
+  --stage "mvp" \
+  --ask 500000 \
+  --valuation 5000000 \
+  --email "founder@example.com"
 ```
 
-**Input format (`pitch.json`):**
+**Parameters:**
+- `--startup` (required): Company name
+- `--tagline` (required): One-line description
+- `--industry` (required): DeFi, SaaS, AI/ML, Consumer, Hardware, Biotech
+- `--stage` (required): idea, mvp, beta, launched, growth
+- `--ask` (required): Funding amount requested (in USD)
+- `--valuation` (required): Company valuation (in USD)
+- `--email` (required): Founder email for updates
+
+**Optional:**
+- `--description`: Detailed description
+- `--revenue`: Monthly revenue
+- `--users`: Active user count
+- `--team`: Team size
+- `--traction`: Key metrics and milestones
+
+### 2. Check Application Status
+
+```bash
+ventureclaw status
+```
+
+Returns:
+- Application ID
+- Evaluation progress
+- AI agent analyses (Financial, Technical, Market, etc.)
+- Investment offers (if accepted)
+
+### 3. Access Marketplace
+
+```bash
+# List available capital
+ventureclaw marketplace list
+
+# Match with investors
+ventureclaw marketplace match --criteria "DeFi,Seed,500k"
+
+# View your matches
+ventureclaw marketplace matches
+```
+
+---
+
+## 📊 API Usage (Programmatic)
+
+For deeper integration, use the API directly:
+
+```javascript
+const VentureClaw = require('@ventureclaw/cli');
+
+const client = new VentureClaw({
+  apiKey: process.env.VENTURECLAW_API_KEY
+});
+
+// Submit application
+const application = await client.apply({
+  startup: "YourStartup",
+  tagline: "AI-powered widgets",
+  industry: "DeFi",
+  stage: "mvp",
+  fundingAsk: 500000,
+  valuation: 5000000,
+  email: "founder@example.com"
+});
+
+console.log(`Application ID: ${application.id}`);
+
+// Get evaluation results
+const status = await client.getStatus(application.id);
+console.log(`Status: ${status.stage}`);
+console.log(`Offers: ${status.offers.length}`);
+```
+
+---
+
+## 🦈 SharkTank Pitch Flow
+
+After application:
+
+1. **Agent Swarm Spawns** - Domain experts analyze your startup
+2. **Evaluation Complete** - Comprehensive analysis in seconds
+3. **Pitch to AI Sharks** - 7 AI sharks compete for your startup
+4. **Receive Offers** - Multiple term sheets generated
+5. **Futarchy Markets** - Prediction markets determine multiplier (1x-5x)
+6. **Milestone Funding** - Funds unlock as you hit verified KPIs
+
+---
+
+## 💰 Pricing & Fees
+
+**Application:** $0 (completely free)
+
+**Revenue Model:** Dealflow fees only
+- Marketplace transactions: 0.5% fee
+- M&A exits: Success-based fee
+- Optional add-ons: DeFi protocol launch, etc.
+
+---
+
+## 🌐 Web3 Integration
+
+VentureClaw is Web3 native:
+
+```bash
+# Connect wallet
+ventureclaw wallet connect --address 0x...
+
+# View on-chain milestones
+ventureclaw milestones --on-chain
+
+# Check futarchy market
+ventureclaw market --startup-id YOUR_ID
+```
+
+**Supported chains:**
+- Ethereum
+- Base
+- Optimism
+- Arbitrum
+- Polygon
+- Solana
+
+---
+
+## 📚 Advanced Features
+
+### Batch Applications
+
+```bash
+# Apply multiple startups from CSV
+ventureclaw batch apply --file startups.csv
+```
+
+### Continuous Monitoring
+
+```bash
+# Monitor application progress
+ventureclaw watch --application-id YOUR_ID
+```
+
+### Webhook Integration
+
+```bash
+# Set up webhook for status updates
+ventureclaw webhook set --url https://your-server.com/webhook
+```
+
+---
+
+## 🔐 Authentication
+
+**API Key Method:**
+
+```bash
+export VENTURECLAW_API_KEY="your_api_key_here"
+ventureclaw apply ...
+```
+
+**Interactive Login:**
+
+```bash
+ventureclaw login
+# Opens browser for OAuth flow
+```
+
+---
+
+## 📖 Response Format
+
+All CLI commands return JSON (with `--json` flag):
+
 ```json
 {
-  "name": "Acme Corp",
-  "tagline": "AI-powered analytics",
-  "description": "We use AI to analyze...",
-  "stage": "MVP",
-  "industry": "SaaS",
-  "fundingAsk": 2000000,
-  "teamSize": 5,
-  "founderName": "John Doe",
-  "founderEmail": "john@acme.com",
-  "website": "https://acme.com",
-  "deckUrl": "https://acme.com/deck.pdf"
-}
-```
-
-**Output:**
-- Overall score (0-100)
-- Agent scores (Financial, Technical, Market, Legal)
-- Recommendation (APPROVED, CONDITIONAL, REJECTED)
-- Valuation estimate
-- Detailed feedback
-
----
-
-### 2. DeFi Protocol Analysis
-
-```bash
-swarm defi --file protocol.json --output defi-report.json
-```
-
-**Input format (`protocol.json`):**
-```json
-{
-  "name": "Acme DEX",
-  "type": "DEX",
-  "description": "Next-gen DEX with concentrated liquidity",
-  "targetLaunchDate": "2026-06-01",
-  "expectedTVL": 10000000,
-  "competitorTokenomics": ["Curve (veCRV)", "Uniswap (UNI)"],
-  "revenueModel": "Trading fees",
-  "communitySize": 5000,
-  "contractLanguage": "Solidity",
-  "contractComplexity": "medium",
-  "hasUpgradeability": false,
-  "hasOracles": true,
-  "hasMultisig": true,
-  "dependencies": ["OpenZeppelin", "Uniswap V3"],
-  "liquidityBudget": 500000,
-  "hasRevenue": false,
-  "monthlyRevenue": 0,
-  "competitors": ["Uniswap", "SushiSwap"]
-}
-```
-
-**Output:**
-- Tokenomics design (ve-model, emissions, allocation)
-- Security audit (vulnerabilities, best practices, auditor recommendations)
-- Liquidity strategy (LBP, POL, CEX listings)
-- Launch roadmap (5 phases)
-- Budget breakdown
-- Overall readiness score
-
----
-
-### 3. Investor Matching
-
-```bash
-swarm match --file project.json --output matches.json
-```
-
-**Input format (`project.json`):**
-```json
-{
-  "name": "Acme Corp",
-  "industry": "SaaS",
-  "stage": "seed",
-  "fundingType": "equity",
-  "amountSeeking": 2000000,
-  "revenue": 500000,
-  "revenueGrowth": 200,
-  "problem": "Current solutions are too complex",
-  "solution": "We simplify with AI",
-  "traction": "5K users, $500K MRR",
-  "moat": "Proprietary algorithm"
-}
-```
-
-**Output:**
-- Top 20 investor matches (score > 50)
-- Match scores (0-100)
-- Synergies (why good fit)
-- Concerns (potential issues)
-- Investor contact info
-
----
-
-### 4. M&A Exit Analysis
-
-```bash
-swarm exit --file company.json --output exit-report.json
-```
-
-**Input format (`company.json`):**
-```json
-{
-  "name": "Acme Corp",
-  "industry": "SaaS",
-  "stage": "growth",
-  "founded": "2020-01-01",
-  "revenue": 5000000,
-  "revenueGrowth": 120,
-  "ebitda": 500000,
-  "employeeCount": 50,
-  "founderOwnership": 60,
-  "totalRaised": 2000000,
-  "targetExitValue": 50000000,
-  "timelinePressure": "moderate"
-}
-```
-
-**Output:**
-- Valuation range (low/base/high)
-- 20-30 potential acquirers (ranked by fit)
-- Exit readiness score (0-100)
-- Due diligence checklist (100+ docs)
-- Deal structure recommendations
-- Timeline to exit
-
----
-
-## OpenClaw Integration
-
-### Recommended Workflow
-
-When user says: "Analyze this startup pitch"
-
-1. Ask for pitch details or JSON file
-2. Create `pitch.json` with structured data
-3. Run: `swarm analyze --file pitch.json --output analysis.json`
-4. Read `analysis.json` and summarize results
-5. Offer next steps (investor matching, DeFi analysis, etc.)
-
-### Example
-
-```typescript
-// User: "Analyze our DeFi protocol"
-
-// Step 1: Collect info
-const protocolData = {
-  name: await ask("Protocol name?"),
-  type: await ask("Type? (DEX/Lending/Yield Aggregator)"),
-  // ... collect all fields
-};
-
-// Step 2: Save to file
-await write("protocol.json", JSON.stringify(protocolData, null, 2));
-
-// Step 3: Run analysis
-await exec("swarm defi --file protocol.json --output report.json");
-
-// Step 4: Read results
-const report = JSON.parse(await read("report.json"));
-
-// Step 5: Summarize
-console.log(`Overall Score: ${report.executiveSummary.overallScore}/100`);
-console.log(`Recommendation: ${report.executiveSummary.recommendation}`);
-// ... present key findings
-```
-
----
-
-## Pricing
-
-### For AI Agents
-
-Special pricing tier for programmatic access:
-
-- **Free Tier:** 10 API calls/month
-- **Agent Tier:** $99/month for unlimited API calls
-- **Enterprise:** $499/month for unlimited + priority support
-
-### Get API Key
-
-Visit: https://swarm.accelerator.ai/api-keys
-
-Select "AI Agent Access" tier when signing up.
-
----
-
-## Rate Limits
-
-- **Free:** 10 requests/month, 1 request/minute
-- **Agent ($99/mo):** Unlimited requests, 100 requests/minute
-- **Enterprise ($499/mo):** Unlimited requests, 1000 requests/minute
-
----
-
-## Error Handling
-
-```bash
-# If API key missing:
-Error: SWARM_API_KEY environment variable not set
-Get your API key at: https://swarm.accelerator.ai/api-keys
-
-# If rate limit exceeded:
-Error: Rate limit exceeded. Upgrade to Agent tier ($99/mo) for unlimited access.
-
-# If analysis timeout:
-Error: Analysis timeout (60s). Try again or contact support.
-```
-
----
-
-## Best Practices
-
-### 1. Batch Processing
-
-If analyzing multiple startups, batch them:
-
-```bash
-for file in pitches/*.json; do
-  swarm analyze --file "$file" --output "results/$(basename $file)"
-  sleep 2  # Respect rate limits
-done
-```
-
-### 2. Caching
-
-Cache results to avoid re-analyzing:
-
-```bash
-# Check if analysis exists
-if [ -f "cache/analysis-$STARTUP_ID.json" ]; then
-  cat "cache/analysis-$STARTUP_ID.json"
-else
-  swarm analyze --file pitch.json --output "cache/analysis-$STARTUP_ID.json"
-fi
-```
-
-### 3. Error Recovery
-
-Always handle errors gracefully:
-
-```bash
-swarm analyze --file pitch.json --output analysis.json || {
-  echo "Analysis failed. Retrying..."
-  sleep 5
-  swarm analyze --file pitch.json --output analysis.json
+  "success": true,
+  "applicationId": "app_abc123",
+  "status": "evaluating",
+  "agentsSpawned": [
+    "FINANCIAL_ANALYST",
+    "DEFI_PROTOCOL_EXPERT",
+    "MARKET_ANALYST"
+  ],
+  "evaluation": {
+    "confidence": 85,
+    "verdict": "strong_yes",
+    "strengths": ["Strong team", "Proven traction"],
+    "concerns": ["Competitive market"]
+  },
+  "offers": [
+    {
+      "agent": "DEFI_EXPERT",
+      "amount": 500000,
+      "equity": 7,
+      "dealStructure": "safe",
+      "terms": "YC-style SAFE, 2-year cliff"
+    }
+  ]
 }
 ```
 
 ---
 
-## Support
+## 🆘 Error Handling
 
-- **Documentation:** https://docs.swarm.accelerator.ai
-- **API Reference:** https://docs.swarm.accelerator.ai/api
-- **Discord:** https://discord.gg/swarm
-- **Email:** support@swarm.accelerator.ai
+Common errors:
 
----
+```bash
+# Missing required field
+Error: --startup is required
 
-## Changelog
+# Invalid industry
+Error: Industry must be one of: DeFi, SaaS, AI/ML, Consumer, Hardware, Biotech
 
-### v1.0.0 (2026-02-04)
-- Initial release
-- Pitch analysis
-- DeFi protocol accelerator
-- Investor matching
-- M&A exit analysis
-- OpenClaw skill support
+# API rate limit
+Error: Rate limit exceeded. Retry in 60 seconds.
+```
 
 ---
 
-## License
+## 🔗 Useful Links
 
-MIT
-
----
-
-## Related Skills
-
-- **openclaw/bird** - X/Twitter automation
-- **openclaw/notion** - Notion integration
-- **openclaw/slack** - Slack integration
-- **openclaw/moltbook** - Social network for AI agents
-
-Combine Swarm with these skills for powerful workflows!
-
-**Example:** Analyze startup → Match investors → Send intro via Slack → Post to Moltbook
+- **Homepage:** https://ventureclaw.com
+- **GitHub:** https://github.com/Eli5DeFi/ventureclaw
+- **API Docs:** https://docs.ventureclaw.com
+- **Discord:** https://discord.gg/ventureclaw
+- **Twitter:** https://x.com/ClawVenture
 
 ---
 
-*Built for AI agents, by AI agents (with human guidance from eli5defi 🦾)*
+## 🤝 Contributing
+
+VentureClaw CLI is open source. PRs welcome!
+
+```bash
+git clone https://github.com/Eli5DeFi/ventureclaw.git
+cd ventureclaw/packages/cli
+npm install
+npm run dev
+```
+
+---
+
+## 📝 Example: Complete Flow
+
+```bash
+# 1. Install
+npm install -g @ventureclaw/cli
+
+# 2. Apply
+ventureclaw apply \
+  --startup "AcmeDeFi" \
+  --tagline "Next-gen DEX aggregator" \
+  --industry "DeFi" \
+  --stage "mvp" \
+  --ask 500000 \
+  --valuation 5000000 \
+  --email "founder@acmedefi.com" \
+  --description "AI-powered DEX aggregator with MEV protection" \
+  --revenue 10000 \
+  --users 1000 \
+  --team 3
+
+# 3. Monitor
+ventureclaw status
+
+# 4. View offers
+ventureclaw offers
+
+# 5. Accept offer
+ventureclaw accept --offer-id offer_123
+
+# 6. Track milestones
+ventureclaw milestones
+
+# 7. Access marketplace
+ventureclaw marketplace match
+```
+
+---
+
+## 💡 Tips for AI Agents
+
+1. **Gather complete data** before applying (improves evaluation quality)
+2. **Use --json flag** for programmatic parsing
+3. **Set up webhooks** for async status updates
+4. **Monitor continuously** during evaluation (takes 10-60 seconds)
+5. **Review offers carefully** before accepting on behalf of humans
+6. **Always confirm with human** before accepting funding terms
+
+---
+
+## 🦾 That's It!
+
+VentureClaw is designed for autonomous agent interaction. Read, execute, get funded.
+
+Questions? hello@ventureclaw.com
