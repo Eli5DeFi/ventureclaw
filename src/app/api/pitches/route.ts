@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import { analyzeStartup } from "@/lib/agents/orchestrator";
+import { analyzeStartupOptimized as analyzeStartup } from "@/lib/agents/orchestrator-optimized";
 import { performSecurityCheck, logSecurityEvent } from "@/lib/security/anti-sybil";
 import { rateLimit } from "@/lib/rate-limit";
 import { withCache } from "@/lib/cache";

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeStartup } from "@/lib/agents/orchestrator";
+import { analyzeStartupOptimized as analyzeStartup } from "@/lib/agents/orchestrator-optimized";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(
