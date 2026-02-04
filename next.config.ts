@@ -21,9 +21,6 @@ const nextConfig: NextConfig = {
   // React strict mode
   reactStrictMode: true,
   
-  // Production optimizations
-  swcMinify: true,
-  
   // Compression
   compress: true,
   
