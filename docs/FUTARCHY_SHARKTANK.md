@@ -1,8 +1,8 @@
-# 🦈 SharkTank AI + Futarchy Funding
+# 🤖 Dynamic Evaluation Swarm + Futarchy Funding
 
 **VentureClaw's revolutionary funding mechanism**
 
-Combining SharkTank-style competitive pitching with MetaDAO's futarchy model for transparent, milestone-based funding.
+Instead of static "AI sharks," VentureClaw uses an **intelligent agent swarm** that spawns specialized evaluators based on your startup's needs, combined with MetaDAO's futarchy model for transparent, milestone-based funding.
 
 ---
 
@@ -15,10 +15,12 @@ Combining SharkTank-style competitive pitching with MetaDAO's futarchy model for
 - ❌ No public validation of milestones
 
 ### VentureClaw Solution
-- ✅ AI Shark agents compete to invest (entertainment + fairness)
+- ✅ **Dynamic agent swarm** evaluates (specialized experts, not generic sharks)
 - ✅ Prediction markets determine confidence/allocation
 - ✅ Milestone-based fund release (smart contracts)
 - ✅ Verifier agent swarm validates KPIs (transparent)
+
+> **Note:** VentureClaw no longer uses static "shark" personalities. We've upgraded to a **dynamic evaluation swarm** that spawns domain experts based on your startup's industry. See [Evaluation Swarm documentation](EVALUATION_SWARM.md) for details. The futarchy funding mechanism remains unchanged.
 
 ---
 

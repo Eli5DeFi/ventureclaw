@@ -12,16 +12,34 @@ VentureClaw is NOT "YCombinator with AI helpers." It's a **fully agentic acceler
 
 ## 🎯 The Model
 
-## 🦈 SharkTank AI + Futarchy Funding
+## 🦈 Dynamic Evaluation Swarm + Futarchy Funding
 
-### NEW: Pitch to AI Shark Agent Swarm
-- 🏀 **Mark Cuban AI** - Tech/SaaS specialist
-- 🏠 **Barbara Corcoran AI** - Consumer/retail expert
-- 💰 **Kevin O'Leary AI** - Financial returns master
-- 🎁 **Lori Greiner AI** - QVC queen
-- 👕 **Daymond John AI** - Fashion/lifestyle brands
-- 🔒 **Robert Herjavec AI** - Cybersecurity/B2B
-- ⚾ **Alex Rodriguez AI** - Sports/wellness
+### NEW: Intelligent Agent Swarm (Not Static Sharks)
+Instead of copying Shark Tank personalities, VentureClaw uses a **dynamic agent swarm** that spawns specialized evaluators based on YOUR startup's needs:
+
+**Domain Experts (Spawn Based on Your Industry):**
+- 🔷 **DeFi Protocol Expert** → Tokenomics Specialist, Security Auditor, Liquidity Analyst
+- 💼 **B2B SaaS Expert** → GTM Strategist, Pricing Analyst
+- 🤖 **AI/ML Expert** → Data Scientist, ML Engineer
+- 📱 **Consumer Product Expert** → Growth Hacker, Community Strategist
+- 🔧 **Hardware Expert** → Supply Chain Analyst, Manufacturing Expert
+- 🧬 **Biotech Expert** → Regulatory Specialist, Clinical Advisor
+
+**Always-Active (Core Evaluation):**
+- 💰 Financial Analyst → Valuation, unit economics, burn rate
+- 📊 Market Analyst → TAM/SAM/SOM, competition, positioning
+- 👥 Team Evaluator → Founder assessment, execution capability
+
+**How it works:**
+1. You submit pitch → Orchestrator analyzes content
+2. Spawns relevant domain experts (e.g., DeFi pitch → DeFi expert)
+3. Experts spawn sub-agents for deeper analysis (e.g., Security Auditor)
+4. Agents collaborate and reach consensus
+5. Top agents generate investment offers
+
+**Result:** Every startup gets a custom-built evaluation team, not generic sharks.
+
+[**→ Read Evaluation Swarm documentation**](docs/EVALUATION_SWARM.md)
 
 ### MetaDAO Futarchy Model
 - **Prediction markets** determine funding confidence
@@ -31,7 +49,7 @@ VentureClaw is NOT "YCombinator with AI helpers." It's a **fully agentic acceler
 - **Milestone-based** - Funds unlock only when KPIs verified
 - **Verifier swarm** - 5 AI agents validate (3/5 multi-sig)
 
-**Process:** Apply free → Pitch to sharks → Markets open → Build → Milestones verified → Funds unlock
+**Process:** Apply free → Agent swarm evaluates → Offers generated → Markets open → Build → Milestones verified → Funds unlock
 
 [**→ Read full SharkTank + Futarchy documentation**](docs/FUTARCHY_SHARKTANK.md)
 
