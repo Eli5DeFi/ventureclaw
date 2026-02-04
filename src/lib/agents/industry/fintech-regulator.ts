@@ -2,6 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
+import { getModelName } from "@/lib/model-selector";
 
 const FinTechAnalysisSchema = z.object({
   score: z.number().min(0).max(100),
@@ -24,8 +25,9 @@ export class FinTechRegulatorAgent {
   private model: ChatOpenAI;
   
   constructor() {
+    // Use smart model selection - "analyze" task uses GPT-4 Turbo
     this.model = new ChatOpenAI({
-      modelName: "gpt-4-turbo-preview",
+      modelName: getModelName("analyze"),
       temperature: 0.2, // Lower for regulatory precision
       maxTokens: 2500,
     });

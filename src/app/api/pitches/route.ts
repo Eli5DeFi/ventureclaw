@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { analyzeStartup } from "@/lib/agents/orchestrator";
 import { performSecurityCheck, logSecurityEvent } from "@/lib/security/anti-sybil";
+import { rateLimit } from "@/lib/rate-limit";
+import { withCache } from "@/lib/cache";
 
 // Validation schema
 const CreatePitchSchema = z.object({
@@ -21,6 +23,10 @@ const CreatePitchSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Rate limiting - prevent spam/abuse
+  const rateLimitResponse = rateLimit(request, 5); // 5 pitches per minute max
+  if (rateLimitResponse) return rateLimitResponse;
+  
   try {
     const body = await request.json();
     
@@ -115,33 +121,45 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "20");
     const offset = parseInt(searchParams.get("offset") || "0");
     
-    const where = status ? { status: status as any } : {};
+    // Cache key includes query params for proper cache segmentation
+    const cacheKey = `pitches-list-${status || "all"}-${limit}-${offset}`;
     
-    const [startups, total] = await Promise.all([
-      prisma.startup.findMany({
-        where,
-        include: {
-          analysis: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: limit,
-        skip: offset,
-      }),
-      prisma.startup.count({ where }),
-    ]);
-    
-    return NextResponse.json({
-      success: true,
-      data: startups,
-      pagination: {
-        total,
-        limit,
-        offset,
-        hasMore: offset + limit < total,
+    // Cache for 2 minutes (balances freshness vs performance)
+    const result = await withCache(
+      cacheKey,
+      async () => {
+        const where = status ? { status: status as any } : {};
+        
+        const [startups, total] = await Promise.all([
+          prisma.startup.findMany({
+            where,
+            include: {
+              analysis: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: limit,
+            skip: offset,
+          }),
+          prisma.startup.count({ where }),
+        ]);
+        
+        return {
+          success: true,
+          data: startups,
+          pagination: {
+            total,
+            limit,
+            offset,
+            hasMore: offset + limit < total,
+          },
+        };
       },
-    });
+      2 * 60 * 1000 // 2 minutes TTL
+    );
+    
+    return NextResponse.json(result);
     
   } catch (error) {
     console.error("Error fetching pitches:", error);
