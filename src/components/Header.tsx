@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -13,6 +14,7 @@ const navigation = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   return (
     <header className="fixed top-16 left-0 right-0 z-40 bg-black/50 backdrop-blur-md border-b border-[var(--glass-border)]">
@@ -52,15 +54,27 @@ export default function Header() {
           </div>
 
           {/* CTA Button */}
-          <Link href="/pitch">
-            <motion.button
-              className="btn-primary px-6 py-2 text-sm"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Started
-            </motion.button>
-          </Link>
+          {session ? (
+            <Link href="/dashboard">
+              <motion.button
+                className="btn-primary px-6 py-2 text-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Dashboard
+              </motion.button>
+            </Link>
+          ) : (
+            <Link href="/auth/signin">
+              <motion.button
+                className="btn-primary px-6 py-2 text-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Sign In
+              </motion.button>
+            </Link>
+          )}
         </div>
       </nav>
     </header>

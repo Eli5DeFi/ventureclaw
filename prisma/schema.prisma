@@ -20,6 +20,8 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?   // hashed password for credentials login
+  walletAddress String?   @unique // Web3 wallet address
   
   // Subscription
   tier          String    @default("free") // "free" | "startup" | "enterprise"
@@ -29,12 +31,14 @@ model User {
   // Relations
   accounts      Account[]
   sessions      Session[]
+  startups      Startup[] // User's pitches
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
   @@index([email])
   @@index([apiKey])
+  @@index([walletAddress])
 }
 
 model Account {
@@ -82,6 +86,9 @@ model VerificationToken {
 
 model Startup {
   id            String   @id @default(cuid())
+  userId        String?  // Link to user who submitted this
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   name          String
   tagline       String
   description   String
@@ -107,9 +114,11 @@ model Startup {
   coachingSessions CoachingSession[]
   marketingCampaigns MarketingCampaign[]
   agentActivities AgentActivity[]
+  funding       Funding?  // Accepted funding deal
   
   @@index([status])
   @@index([createdAt])
+  @@index([userId])
 }
 
 model Analysis {
@@ -144,6 +153,51 @@ model Analysis {
   updatedAt     DateTime @updatedAt
   
   @@index([recommendation])
+}
+
+// ============================================
+// Funding & Milestones
+// ============================================
+
+model Funding {
+  id              String   @id @default(cuid())
+  startupId       String   @unique
+  startup         Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  
+  dealAmount      Int      // in USD cents
+  equityPercent   Float
+  dealType        String   // "SAFE", "Equity", "Convertible"
+  acceptedAt      DateTime
+  
+  milestones      Milestone[]
+  totalReleased   Int      @default(0)
+  status          String   @default("active") // active, completed, defaulted
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([status])
+}
+
+model Milestone {
+  id          String    @id @default(cuid())
+  fundingId   String
+  funding     Funding   @relation(fields: [fundingId], references: [id], onDelete: Cascade)
+  
+  number      Int       // 1-5
+  description String
+  amount      Int       // in USD cents
+  dueDate     DateTime
+  status      String    @default("pending") // pending, completed, verified
+  txHash      String?   // On-chain verification
+  completedAt DateTime?
+  verifiedAt  DateTime?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([fundingId])
+  @@index([status])
 }
 
 model VCMatch {

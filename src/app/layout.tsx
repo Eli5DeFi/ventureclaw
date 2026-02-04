@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import WaitlistBanner from "@/components/WaitlistBanner";
 import Header from "@/components/Header";
+import { SessionProvider } from "next-auth/react";
+import { Web3Provider } from "@/components/Web3Provider";
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,11 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.variable} antialiased`}>
-        <WaitlistBanner />
-        <Header />
-        <div className="pt-32">
-          {children}
-        </div>
+        <Providers>
+          <WaitlistBanner />
+          <Header />
+          <div className="pt-32">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

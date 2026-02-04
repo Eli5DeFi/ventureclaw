@@ -1,12 +1,14 @@
 // Authentication configuration using NextAuth.js v5 (Auth.js)
-// Supports: Email magic links, Google OAuth, GitHub OAuth
+// Supports: Email magic links, Google OAuth, GitHub OAuth, Email/Password
 
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import GitHub from 'next-auth/providers/github';
 import Resend from 'next-auth/providers/resend';
+import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';
+import bcrypt from 'bcryptjs';
 
 export const {
   handlers: { GET, POST },
@@ -17,6 +19,44 @@ export const {
   adapter: PrismaAdapter(prisma),
   
   providers: [
+    // Email/Password login
+    Credentials({
+      name: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Email and password required');
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email as string },
+        });
+
+        if (!user || !user.password) {
+          throw new Error('Invalid email or password');
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
+
+        if (!isPasswordValid) {
+          throw new Error('Invalid email or password');
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        };
+      },
+    }),
+    
     // Email magic links (passwordless)
     Resend({
       apiKey: process.env.RESEND_API_KEY,
@@ -45,19 +85,32 @@ export const {
   },
   
   callbacks: {
-    async session({ session, user }) {
-      // Add user ID to session
-      if (session.user) {
-        session.user.id = user.id;
+    async jwt({ token, user, account }) {
+      // Initial sign in
+      if (user) {
+        token.id = user.id;
         
-        // Add subscription tier (for rate limiting)
-        const userWithTier = await prisma.user.findUnique({
+        // Fetch additional user data
+        const dbUser = await prisma.user.findUnique({
           where: { id: user.id },
-          select: { tier: true, apiKey: true },
+          select: { tier: true, apiKey: true, walletAddress: true },
         });
         
-        session.user.tier = userWithTier?.tier || 'free';
-        session.user.apiKey = userWithTier?.apiKey || null;
+        token.tier = dbUser?.tier || 'free';
+        token.apiKey = dbUser?.apiKey || null;
+        token.walletAddress = dbUser?.walletAddress || null;
+      }
+      
+      return token;
+    },
+    
+    async session({ session, token }) {
+      // Add user data to session from JWT token
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.tier = token.tier as string;
+        session.user.apiKey = token.apiKey as string | null;
+        session.user.walletAddress = token.walletAddress as string | null;
       }
       
       return session;
@@ -86,7 +139,7 @@ export const {
   },
   
   session: {
-    strategy: 'database', // Use database sessions (more secure)
+    strategy: 'jwt', // JWT required for Credentials provider
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   
