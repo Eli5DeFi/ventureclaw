@@ -84,9 +84,10 @@ export function AuthButton() {
               <div className="p-4 border-b border-gray-700">
                 <div className="font-semibold">{session.user?.name || 'User'}</div>
                 <div className="text-sm text-gray-400">{session.user?.email}</div>
-                <div className="mt-2 inline-block px-2 py-1 bg-blue-600/20 text-blue-400 text-xs rounded-full">
-                  {session.user?.tier || 'Free'} Tier
-                </div>
+                {/* TODO: Add tier management system */}
+                {/* <div className="mt-2 inline-block px-2 py-1 bg-blue-600/20 text-blue-400 text-xs rounded-full">
+                  Free Tier
+                </div> */}
               </div>
 
               {/* Menu items */}
