@@ -10,12 +10,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SwarmAccelerator | AI-Powered Startup Accelerator",
-  description: "Pitch your startup to an intelligent swarm of AI agents. Get instant analysis, valuation, and connect with top VCs. The future of startup funding is here.",
-  keywords: ["AI accelerator", "startup funding", "VC matching", "pitch analysis", "futarchy", "ICO", "stablecoin"],
+  title: "VentureClaw | YCombinator Powered by AI Agents",
+  description: "Apply free. Get AI-powered analysis. Join our batch. Build with AI agent swarms. The future of startup acceleration is here.",
+  keywords: ["AI accelerator", "startup funding", "YCombinator alternative", "pitch analysis", "venture capital", "seed funding"],
   openGraph: {
-    title: "SwarmAccelerator | AI-Powered Startup Accelerator",
-    description: "Pitch your startup to an intelligent swarm of AI agents. Get instant analysis, valuation, and connect with top VCs.",
+    title: "VentureClaw | YCombinator Powered by AI Agents",
+    description: "Apply free. Get AI-powered analysis. Join our batch. Build with AI agent swarms.",
     type: "website",
   },
 };

@@ -62,7 +62,7 @@ export default function WaitlistBanner() {
         <div className="container mx-auto flex items-center justify-between gap-4">
           <div className="flex-1">
             <p className="text-sm md:text-base font-medium">
-              🚀 <strong>Early Access:</strong> Join the waitlist for exclusive beta access + lifetime discount
+              🚀 <strong>Next Batch:</strong> Applications open now - Free analysis for all founders
             </p>
           </div>
 

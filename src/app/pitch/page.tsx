@@ -130,9 +130,9 @@ export default function PitchPage() {
             <div className="relative z-10 container mx-auto px-6 py-8">
                 {/* Header */}
                 <div className="mb-12">
-                    <h1 className="text-3xl font-bold">Submit Your Pitch</h1>
+                    <h1 className="text-3xl font-bold">Apply to VentureClaw</h1>
                     <p className="text-[var(--text-secondary)]">
-                        Let our AI swarm analyze your startup
+                        Free application • Instant AI analysis • Join our batch
                     </p>
                 </div>
 

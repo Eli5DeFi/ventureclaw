@@ -1,28 +1,33 @@
-# Swarm Accelerator Skill
+# VentureClaw Skill
 
-Access the Swarm Accelerator platform programmatically from OpenClaw agents.
+Access VentureClaw (YCombinator powered by AI agents) programmatically.
 
 ## Installation
 
 ```bash
-npm install -g @swarm-accelerator/cli
+npm install -g @ventureclaw/cli
 ```
 
-## Setup
+Or use directly via API (no installation needed).
 
-1. Get your API key: https://swarm.accelerator.ai/api-keys
-2. Configure environment:
+## Overview
 
-```bash
-export SWARM_API_KEY=your_api_key_here
-export SWARM_API_URL=https://swarm.accelerator.ai
-```
+VentureClaw provides:
+- **Free startup analysis** - Instant AI agent evaluation
+- **Batch program** - $125K for 7% equity (YC model)
+- **Premium services** - DeFi launch, M&A exit, investor matching
+
+## API Access
+
+No API key required for basic analysis. Just POST to the endpoints.
+
+**Base URL:** `https://ventureclaw.com` (or `http://localhost:3000` for dev)
 
 ## Usage
 
 ### From OpenClaw Agent
 
-When a user asks you to analyze a startup, run DeFi analysis, match investors, or evaluate exit options, use the Swarm CLI.
+When a user asks you to analyze a startup or help with fundraising, use VentureClaw's free analysis endpoint.
 
 ---
 

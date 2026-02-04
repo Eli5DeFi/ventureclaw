@@ -1,409 +1,263 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import {
+  CheckIcon,
+  RocketLaunchIcon,
+  SparklesIcon,
+  CurrencyDollarIcon,
+} from '@heroicons/react/24/outline';
 
 export default function Pricing() {
-  const [mode, setMode] = useState<'human' | 'agent'>('human');
-
-  const humanPlans = [
-    {
-      name: 'Free',
-      price: '$0',
-      period: '/month',
-      description: 'For individual founders testing the platform',
-      features: [
-        '1 pitch analysis/month',
-        'Basic financial analysis',
-        'Community support',
-        'Public results (anonymized)',
-      ],
-      cta: 'Get Started',
-      href: '/pitch',
-      popular: false,
-    },
-    {
-      name: 'Startup',
-      price: '$499',
-      period: '/month',
-      description: 'For startups actively fundraising',
-      features: [
-        '10 pitch analyses/month',
-        'All 4 AI agents (financial, technical, market, legal)',
-        'Investor matching (up to 20 matches)',
-        'Priority support',
-        'Private results',
-        'Export to PDF',
-      ],
-      cta: 'Start Trial',
-      href: '/pricing/checkout?plan=startup',
-      popular: true,
-    },
-    {
-      name: 'DeFi Pro',
-      price: '$2,999',
-      period: 'one-time',
-      description: 'Complete DeFi protocol launch package',
-      features: [
-        'Tokenomics design (ve-model)',
-        'Smart contract security audit',
-        'Liquidity strategy (LBP, POL)',
-        'CEX listing roadmap',
-        '72-hour delivery',
-        'Dedicated support',
-      ],
-      cta: 'Launch DeFi',
-      href: '/defi',
-      popular: false,
-    },
-    {
-      name: 'M&A Exit',
-      price: '$9,999',
-      period: 'one-time',
-      description: 'Comprehensive exit analysis',
-      features: [
-        '20-30 acquirer matches',
-        'Multi-method valuation',
-        'Due diligence prep (100+ docs)',
-        'Deal structure recommendations',
-        'Exit readiness score',
-        'Success fee option (0.25%)',
-      ],
-      cta: 'Plan Exit',
-      href: '/exit',
-      popular: false,
-    },
-  ];
-
-  const agentPlans = [
-    {
-      name: 'Free Tier',
-      price: '$0',
-      period: '/month',
-      description: 'For AI agents in development/testing',
-      features: [
-        '10 API calls/month',
-        '1 request/minute rate limit',
-        'All endpoints (pitch, DeFi, matching, M&A)',
-        'Community support',
-        'Public API docs',
-      ],
-      cta: 'Get API Key',
-      href: '/api-keys',
-      popular: false,
-    },
-    {
-      name: 'Agent Tier',
-      price: '$99',
-      period: '/month',
-      description: 'For production AI agents',
-      features: [
-        'Unlimited API calls',
-        '100 requests/minute',
-        'All endpoints',
-        'Priority support (24h response)',
-        'SDK + CLI included',
-        'Analytics dashboard',
-      ],
-      cta: 'Enable Agent Mode',
-      href: '/pricing/checkout?plan=agent',
-      popular: true,
-    },
-    {
-      name: 'Enterprise',
-      price: '$499',
-      period: '/month',
-      description: 'For AI agent platforms & enterprises',
-      features: [
-        'Unlimited API calls',
-        '1,000 requests/minute',
-        'Dedicated infrastructure',
-        'White-label option',
-        'Custom integrations',
-        'SLA (99.9% uptime)',
-        '1-hour support response',
-      ],
-      cta: 'Contact Sales',
-      href: '/contact',
-      popular: false,
-    },
-  ];
-
-  const plans = mode === 'human' ? humanPlans : agentPlans;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-black text-white">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      
+      <div className="relative z-10 container mx-auto px-6 py-16">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h1 className="text-5xl font-bold mb-4">Choose Your Mode</h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            Whether you're a human founder or an AI agent, we've got you covered
+          <h1 className="text-5xl font-bold mb-4">
+            <span className="gradient-text">YCombinator Model</span>
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Apply free. Get instant AI analysis. Join our batch for funding and support.
           </p>
+        </motion.div>
 
-          {/* Mode Toggle */}
-          <div className="inline-flex rounded-lg bg-gray-800 p-1">
-            <button
-              onClick={() => setMode('human')}
-              className={`px-8 py-3 rounded-lg font-semibold transition-all ${
-                mode === 'human'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              👤 Human Mode
-            </button>
-            <button
-              onClick={() => setMode('agent')}
-              className={`px-8 py-3 rounded-lg font-semibold transition-all ${
-                mode === 'agent'
-                  ? 'bg-purple-600 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              🤖 AI Agent Mode
-            </button>
+        {/* Main Offer - YC Style */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="max-w-4xl mx-auto mb-16"
+        >
+          <div className="glass rounded-2xl p-8 border-2 border-[#00f0ff]">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-2">Standard Deal</h2>
+              <p className="text-gray-400">Same for everyone, like YCombinator</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-[#00f0ff] mb-2">$125K</div>
+                <div className="text-gray-400">Investment</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-[#a855f7] mb-2">7%</div>
+                <div className="text-gray-400">Equity</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-[#10b981] mb-2">3 mo</div>
+                <div className="text-gray-400">Batch Duration</div>
+              </div>
+            </div>
+
+            <div className="bg-black/50 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <SparklesIcon className="w-6 h-6 text-[#00f0ff]" />
+                What You Get
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  'AI agent swarms (24/7 support)',
+                  'Product development assistance',
+                  'Investor introductions',
+                  'Weekly founder dinners',
+                  'Demo Day pitch coaching',
+                  'Legal & accounting templates',
+                  'Follow-on funding support',
+                  'Alumni network access',
+                ].map((feature, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <CheckIcon className="w-5 h-5 text-[#10b981] flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Link href="/pitch">
+              <motion.button
+                className="w-full btn-primary text-lg py-4 flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <RocketLaunchIcon className="w-6 h-6" />
+                Apply Now (Free)
+              </motion.button>
+            </Link>
           </div>
         </motion.div>
 
-        {/* Mode Description */}
+        {/* Premium Services */}
         <motion.div
-          key={mode}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl mx-auto mb-12 p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm"
+          transition={{ delay: 0.4 }}
         >
-          {mode === 'human' ? (
-            <>
-              <h3 className="text-2xl font-bold mb-3">👤 Human Mode</h3>
-              <p className="text-gray-300 mb-4">
-                Beautiful web interface for founders, VCs, and operators. Submit pitches,
-                analyze DeFi protocols, match with investors, and plan exits — all through
-                an intuitive UI.
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Premium Services <span className="text-gray-500">(Optional)</span>
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* DeFi Launch */}
+            <div className="glass rounded-xl p-6">
+              <div className="text-2xl font-bold mb-2">🔥 DeFi Launch</div>
+              <div className="text-3xl font-bold mb-4">
+                <span className="text-[#00f0ff]">$2,999</span>
+                <span className="text-gray-500 text-lg"> one-time</span>
+              </div>
+              <p className="text-gray-400 mb-6">
+                Complete tokenomics, security audit, and liquidity strategy
               </p>
-              <div className="flex gap-4 text-sm">
-                <span className="px-3 py-1 rounded-full bg-blue-600/20 text-blue-400">
-                  Web UI
-                </span>
-                <span className="px-3 py-1 rounded-full bg-blue-600/20 text-blue-400">
-                  Interactive dashboards
-                </span>
-                <span className="px-3 py-1 rounded-full bg-blue-600/20 text-blue-400">
-                  Visual reports
-                </span>
-              </div>
-            </>
-          ) : (
-            <>
-              <h3 className="text-2xl font-bold mb-3">🤖 AI Agent Mode</h3>
-              <p className="text-gray-300 mb-4">
-                Programmatic API access for AI agents (OpenClaw, Claude Code, Cursor, etc.).
-                Install via npm, use CLI, or integrate via SDK. Perfect for automation, batch
-                processing, and agent-to-agent workflows.
-              </p>
-              <div className="bg-gray-900 rounded-lg p-4 mb-4">
-                <code className="text-green-400 text-sm">
-                  $ npm install -g @swarm-accelerator/cli<br />
-                  $ swarm analyze --file pitch.json
-                </code>
-              </div>
-              <div className="flex gap-4 text-sm">
-                <span className="px-3 py-1 rounded-full bg-purple-600/20 text-purple-400">
-                  REST API
-                </span>
-                <span className="px-3 py-1 rounded-full bg-purple-600/20 text-purple-400">
-                  CLI
-                </span>
-                <span className="px-3 py-1 rounded-full bg-purple-600/20 text-purple-400">
-                  OpenClaw skill
-                </span>
-              </div>
-            </>
-          )}
-        </motion.div>
-
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative rounded-2xl p-8 ${
-                plan.popular
-                  ? 'bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-2 border-purple-500'
-                  : 'bg-gray-800/50 border border-gray-700'
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-sm font-semibold">
-                  Most Popular
-                </div>
-              )}
-
-              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              <p className="text-gray-400 mb-6 text-sm h-12">{plan.description}</p>
-
-              <div className="mb-6">
-                <span className="text-4xl font-bold">{plan.price}</span>
-                <span className="text-gray-400">{plan.period}</span>
-              </div>
-
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm">
-                    <svg
-                      className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-gray-300">{feature}</span>
+              <ul className="space-y-3 mb-6">
+                {[
+                  'Tokenomics design (ve-model)',
+                  'Smart contract audit',
+                  'Liquidity strategy (LBP, POL)',
+                  '72-hour delivery',
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckIcon className="w-5 h-5 text-[#10b981] flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
-
-              <Link href={plan.href}>
-                <button
-                  className={`w-full py-3 rounded-lg font-semibold transition-all ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-                      : 'bg-gray-700 hover:bg-gray-600'
-                  }`}
-                >
-                  {plan.cta}
+              <Link href="/defi">
+                <button className="w-full glass hover:bg-white/5 py-3 rounded-lg transition">
+                  Learn More
                 </button>
               </Link>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Installation Instructions (Agent Mode) */}
-        {mode === 'agent' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto mt-16 p-8 rounded-2xl bg-gray-800/50 backdrop-blur-sm border border-gray-700"
-          >
-            <h3 className="text-2xl font-bold mb-6">🚀 Quick Start for AI Agents</h3>
-
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-bold mb-2">1. Install CLI</h4>
-                <div className="bg-gray-900 rounded-lg p-4">
-                  <code className="text-green-400">
-                    npm install -g @swarm-accelerator/cli
-                  </code>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold mb-2">2. Get API Key</h4>
-                <div className="bg-gray-900 rounded-lg p-4">
-                  <code className="text-green-400">
-                    # Visit: https://swarm.accelerator.ai/api-keys<br />
-                    export SWARM_API_KEY=sk_agent_your_key_here
-                  </code>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold mb-2">3. Run Analysis</h4>
-                <div className="bg-gray-900 rounded-lg p-4">
-                  <code className="text-green-400">
-                    swarm analyze --file pitch.json --output analysis.json
-                  </code>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold mb-2">4. OpenClaw Skill</h4>
-                <p className="text-gray-400 mb-2">
-                  For OpenClaw agents, the skill is pre-installed. Just use the commands:
-                </p>
-                <div className="bg-gray-900 rounded-lg p-4">
-                  <code className="text-green-400">
-                    swarm analyze --file pitch.json<br />
-                    swarm defi --file protocol.json<br />
-                    swarm match --file project.json<br />
-                    swarm exit --file company.json
-                  </code>
-                </div>
-              </div>
             </div>
 
-            <div className="mt-8 p-4 bg-blue-900/30 border border-blue-600/30 rounded-lg">
-              <p className="text-sm text-blue-300">
-                <strong>💡 Tip:</strong> Combine Swarm with other OpenClaw skills (bird,
-                slack, notion) for powerful automation workflows!
+            {/* M&A Exit */}
+            <div className="glass rounded-xl p-6">
+              <div className="text-2xl font-bold mb-2">🚀 M&A Exit</div>
+              <div className="text-3xl font-bold mb-4">
+                <span className="text-[#00f0ff]">$9,999</span>
+                <span className="text-gray-500 text-lg"> + success fee</span>
+              </div>
+              <p className="text-gray-400 mb-6">
+                Complete exit preparation and acquirer matching
               </p>
+              <ul className="space-y-3 mb-6">
+                {[
+                  '20-30 acquirer matches',
+                  'Valuation modeling',
+                  'DD preparation',
+                  '0.25% success fee (optional)',
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckIcon className="w-5 h-5 text-[#10b981] flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/exit">
+                <button className="w-full glass hover:bg-white/5 py-3 rounded-lg transition">
+                  Learn More
+                </button>
+              </Link>
             </div>
-          </motion.div>
-        )}
+
+            {/* Follow-on Fundraising */}
+            <div className="glass rounded-xl p-6">
+              <div className="text-2xl font-bold mb-2">💰 Follow-on Raise</div>
+              <div className="text-3xl font-bold mb-4">
+                <span className="text-[#10b981]">Success-based</span>
+              </div>
+              <p className="text-gray-400 mb-6">
+                Help raising Series A, B, C+ with our VC network
+              </p>
+              <ul className="space-y-3 mb-6">
+                {[
+                  'Warm VC introductions',
+                  'Pitch deck optimization',
+                  'Term sheet negotiation',
+                  '2% of amount raised',
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckIcon className="w-5 h-5 text-[#10b981] flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/marketplace-demo">
+                <button className="w-full glass hover:bg-white/5 py-3 rounded-lg transition">
+                  Learn More
+                </button>
+              </Link>
+            </div>
+          </div>
+        </motion.div>
 
         {/* FAQ */}
-        <div className="max-w-4xl mx-auto mt-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-
-          <div className="space-y-4">
-            <details className="p-6 rounded-xl bg-gray-800/50 border border-gray-700">
-              <summary className="font-semibold cursor-pointer">
-                What's the difference between Human Mode and AI Agent Mode?
-              </summary>
-              <p className="mt-4 text-gray-400">
-                Human Mode uses the web UI (beautiful dashboards, visual reports). AI Agent
-                Mode uses the API/CLI (programmatic access for automation). Both access the
-                same powerful AI agents, just different interfaces.
-              </p>
-            </details>
-
-            <details className="p-6 rounded-xl bg-gray-800/50 border border-gray-700">
-              <summary className="font-semibold cursor-pointer">
-                Can I use both modes?
-              </summary>
-              <p className="mt-4 text-gray-400">
-                Yes! Subscribe to a human plan (e.g., Startup $499/mo) AND an agent plan
-                (Agent $99/mo) to access both. Perfect for teams where humans use the UI
-                and automation scripts use the API.
-              </p>
-            </details>
-
-            <details className="p-6 rounded-xl bg-gray-800/50 border border-gray-700">
-              <summary className="font-semibold cursor-pointer">
-                Which AI agents are supported?
-              </summary>
-              <p className="mt-4 text-gray-400">
-                Any AI agent that can execute shell commands or make HTTP requests:
-                OpenClaw, Claude Code, Cursor, GitHub Copilot, Aider, Cline, Windsurf, or
-                custom agents. We provide a CLI and SDK for easy integration.
-              </p>
-            </details>
-
-            <details className="p-6 rounded-xl bg-gray-800/50 border border-gray-700">
-              <summary className="font-semibold cursor-pointer">
-                What are the rate limits?
-              </summary>
-              <p className="mt-4 text-gray-400">
-                Free: 10 requests/month. Agent ($99/mo): Unlimited requests, 100/minute.
-                Enterprise ($499/mo): Unlimited requests, 1,000/minute. Humans have
-                separate limits (no strict cap, fair use policy).
-              </p>
-            </details>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-16 max-w-3xl mx-auto"
+        >
+          <h2 className="text-3xl font-bold text-center mb-8">FAQs</h2>
+          <div className="space-y-6">
+            {[
+              {
+                q: 'Is the application really free?',
+                a: 'Yes, 100% free. Submit your pitch and get AI analysis instantly. No credit card required.',
+              },
+              {
+                q: 'How does batch acceptance work?',
+                a: 'AI agents analyze all applications. Top companies are invited to join our 3-month batch. We invest $125K for 7% equity.',
+              },
+              {
+                q: 'What if I just want the analysis?',
+                a: 'No problem! You can use our free analysis without applying to the batch. Great for testing ideas or getting feedback.',
+              },
+              {
+                q: 'Do I need to be crypto/DeFi focused?',
+                a: 'Not at all. We accept all types of startups - AI, SaaS, hardware, climate tech, anything. The DeFi service is optional.',
+              },
+              {
+                q: 'How are you different from YCombinator?',
+                a: 'We use AI agent swarms to provide 24/7 support at scale. Same batch model, same deal terms, but with AI superpowers.',
+              },
+            ].map((faq, i) => (
+              <div key={i} className="glass rounded-xl p-6">
+                <h3 className="text-xl font-bold mb-2">{faq.q}</h3>
+                <p className="text-gray-400">{faq.a}</p>
+              </div>
+            ))}
           </div>
-        </div>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-16 text-center"
+        >
+          <h2 className="text-3xl font-bold mb-4">Ready to build?</h2>
+          <p className="text-gray-400 mb-8">
+            Applications are open. Get your AI analysis in seconds.
+          </p>
+          <Link href="/pitch">
+            <motion.button
+              className="btn-primary text-lg px-12 py-4 inline-flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <RocketLaunchIcon className="w-6 h-6" />
+              Apply Free Now
+            </motion.button>
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

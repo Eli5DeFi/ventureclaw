@@ -1,178 +1,315 @@
-# 🦾 Swarm Accelerator
+# 🦾 VentureClaw
 
-**Fully autonomous AI agents swarm for startup acceleration**
+**YCombinator, powered by AI agents**
 
-Swarm Accelerator is the world's first fully autonomous startup accelerator powered by coordinated AI agents. Get instant pitch analysis, funding via stablecoin ICOs, 24/7 AI mentorship, and autonomous marketing—all without human gatekeepers.
+VentureClaw is a startup accelerator that combines YCombinator's proven batch model with AI agent swarms. Apply free, get instant analysis, join our batch for $125K funding, and build with 24/7 AI support.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 
-## ✨ Features
+## 🎯 The Model
 
-### 🤖 AI Agent Swarm Analysis
-- **Financial Analyst Agent** - Revenue models, burn rate, valuation
-- **Technical DD Agent** - Tech stack, scalability, IP assessment  
-- **Market Research Agent** - TAM/SAM/SOM, competitive landscape
-- **Legal & Compliance Agent** - Regulatory requirements, risk flags
+### Standard Deal (Same for Everyone)
+- **$125K investment** for **7% equity**
+- **3-month batch program**
+- **AI agent swarms** guide you 24/7
+- **Demo Day** + investor intros
+- **Free application** - no gatekeepers
 
-**Analysis time:** ~4 seconds (vs. 4 weeks traditional VCs)  
-**Cost:** ~$2.40 per analysis (vs. $5,000+ human analysts)
+Just like YCombinator, but with AI agents providing scalable, personalized support.
 
-### 💰 Decentralized Funding
-- **Futarchy Governance** - Prediction markets decide funding allocation
-- **Stablecoin ICOs** - Raise capital via USDC with transparent on-chain governance
-- **Smart Contract Escrow** - Automated fund release based on milestones
-- **VC Persona Agents** - VCs create AI clones that evaluate deals 24/7
+---
 
-### 🎓 Autonomous Coaching (Coming Soon)
-- **Strategic Advisor Agent** - Weekly strategy sessions & pivots
-- **Product Coach Agent** - Roadmap guidance & feature prioritization
-- **Sales Coach Agent** - Pitch refinement & objection handling
-- **Fundraising Coach Agent** - Investor intros & term sheet negotiation
-- **Persistent Memory** - Agents remember all conversations & context
+## ✨ What You Get
 
-### 📈 Marketing Automation (Coming Soon)
-- **Content Strategy Agent** - Content calendar & campaign planning
-- **Content Creation Agent** - Blog posts, social content, graphics (AI-generated)
-- **Distribution Agent** - Multi-platform scheduling & engagement
-- **SEO Agent** - Optimization & backlink building
-- **Growth Hacking Agent** - A/B testing & viral mechanics
+### 🤖 AI Agent Swarm (24/7)
+- **Financial Agent** - Revenue modeling, burn rate analysis, valuation
+- **Technical Agent** - Architecture review, security audit, scaling strategy
+- **Market Agent** - TAM/SAM/SOM sizing, competitive analysis, positioning
+- **Legal Agent** - Compliance, contracts, IP protection
 
-## 🏗️ Architecture
+**Analysis time:** Instant (vs. weeks with traditional VCs)  
+**Availability:** 24/7 (vs. scheduled meetings)
+
+### 🚀 Batch Program (3 months)
+- Weekly founder dinners (virtual + in-person)
+- Product development sprints with AI assistance
+- Investor matchmaking via AI-powered network
+- Demo Day pitch coaching
+- Follow-on fundraising support
+
+### 💰 Premium Services (Optional)
+- **DeFi Launch:** $2,999 - Tokenomics, audit, liquidity ($2,999)
+- **M&A Exit:** $9,999 + success fee - Acquirer matching, valuation, DD prep
+- **Follow-on Fundraising:** Success-based - Series A/B/C+ support
+
+---
+
+## 🏗️ Tech Stack
 
 ```
-Frontend (Next.js 16 + React 19)
-    ↓
-API Layer (tRPC / REST)
-    ↓
-Agent Orchestration (LangGraph + LangChain)
-    ↓
-┌─────────────────┬──────────────────┬──────────────────┬──────────────────┐
-│ Analysis Swarm  │  Coaching Swarm  │ Marketing Swarm  │ Operations Swarm │
-│ - Financial     │ - Strategic      │ - Content        │ - Funding        │
-│ - Technical     │ - Product        │ - Distribution   │ - Portfolio      │
-│ - Market        │ - Sales          │ - SEO            │ - Network        │
-│ - Legal         │ - Fundraising    │ - Growth         │ - Compliance     │
-└─────────────────┴──────────────────┴──────────────────┴──────────────────┘
-    ↓                   ↓                   ↓                   ↓
-PostgreSQL         Vector DB           Redis Queue        Blockchain
-(Prisma)          (Pinecone)          (Bull MQ)         (Base L2)
+Frontend
+├── Next.js 16 (App Router)
+├── React 19
+├── Tailwind CSS + Framer Motion
+└── TypeScript
+
+Backend
+├── API Routes (Next.js)
+├── Prisma ORM
+├── PostgreSQL (production)
+└── Zustand (state management)
+
+AI Agents
+├── OpenAI GPT-4
+├── LangChain (orchestration)
+├── Custom agent framework
+└── Multi-agent coordination
+
+Blockchain (Optional)
+├── Base L2 (primary)
+├── Solidity smart contracts
+├── Multi-chain support
+└── Futarchy governance
 ```
 
-## 🚀 Getting Started
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 20+
-- PostgreSQL 15+
-- Redis 7+
+- Node.js 18+
+- PostgreSQL (or use SQLite for dev)
 - OpenAI API key
 
 ### Installation
 
 ```bash
-# Clone the repo
+# Clone repository
 git clone https://github.com/Eli5DeFi/swarm-accelerator.git
 cd swarm-accelerator
 
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your API keys
-
-# Set up database
-npx prisma migrate dev
+# Set up environment
+cp .env.example .env.local
+# Add your OPENAI_API_KEY to .env.local
 
 # Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the app.
+Visit http://localhost:3000
 
-## 🛠️ Tech Stack
+### Database Setup
 
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | Next.js 16, React 19, TailwindCSS 4, Framer Motion |
-| **Backend** | Next.js API Routes, Prisma ORM, PostgreSQL |
-| **AI** | OpenAI GPT-4, Assistants API, LangChain, LangGraph |
-| **Blockchain** | Base L2, Solidity, Wagmi, Viem, RainbowKit |
-| **Infrastructure** | Vercel, Railway, Redis, Pinecone |
-| **Monitoring** | Sentry, PostHog |
+```bash
+# Generate Prisma client
+npm run db:generate
 
-## 📊 Current Status
+# Run migrations (PostgreSQL)
+npm run db:migrate
 
-**✅ Completed (60% MVP):**
-- ✅ Complete Next.js 16 frontend with beautiful animations
-- ✅ Full Prisma database schema + PostgreSQL setup
-- ✅ All 4 AI agents (Financial, Technical, Market, Legal) with GPT-4
-- ✅ Analysis orchestrator (runs agents in parallel)
-- ✅ API routes (/api/pitches, /api/waitlist, /api/agent-activity)
-- ✅ Multi-step pitch submission form
-- ✅ Real-time analysis dashboard
-- ✅ Waitlist capture system
-- ✅ Development setup scripts + documentation
-- ✅ Database seeding with sample data
+# Or use SQLite for quick testing
+# (no migration needed, works out of the box)
+```
 
-**🚧 In Progress:**
-- Payment integration (Stripe)
-- Production deployment (Vercel + Database)
-- User authentication
-- VC matching system
+---
 
-**🔜 Coming Soon:**
-- Coaching system (OpenAI Assistants API)
-- Marketing automation agents
-- Smart contract integration
-- Blockchain futarchy governance
-- Public beta launch
+## 📂 Project Structure
 
-**🎯 Ready for Beta:** ~3-5 days of focused work remaining
+```
+ventureclaw/
+├── src/
+│   ├── app/                    # Next.js pages
+│   │   ├── pitch/             # Free application form
+│   │   ├── defi/              # DeFi launch service
+│   │   ├── exit/              # M&A exit service
+│   │   ├── marketplace-demo/  # Investor matching
+│   │   └── pricing/           # Pricing & FAQs
+│   ├── components/            # React components
+│   ├── lib/
+│   │   ├── agents/           # AI agent implementations
+│   │   ├── store/            # Zustand state
+│   │   └── prisma.ts         # Database client
+│   └── middleware/           # Agent detection, etc.
+├── prisma/
+│   └── schema.prisma         # Database schema
+├── packages/
+│   └── cli/                  # CLI tool for AI agents
+├── skills/
+│   └── swarm-accelerator/    # OpenClaw skill integration
+└── docs/                     # Documentation
+```
 
-## 💡 Unique Innovations
+---
 
-1. **VC Persona Agents** - VCs create AI personas that evaluate deals autonomously
-2. **Swarm Intelligence** - Multiple agents vote/consensus for robust decisions
-3. **Futarchy Governance** - Prediction markets for transparent funding allocation
-4. **Agent Marketplace** - Startups purchase additional specialized agent services
-5. **On-Chain Reputation** - All agent decisions tracked & verifiable on blockchain
+## 🤖 AI Agent Architecture
 
-## 📈 Roadmap
+### Core Analysis Agents
+1. **Financial Analyst** - Revenue, costs, runway, valuation
+2. **Technical DD** - Architecture, security, scalability
+3. **Market Research** - TAM, competition, positioning
+4. **Legal Compliance** - Regulations, contracts, IP
 
-**Phase 1 (Week 1-2):** Backend infrastructure + database  
-**Phase 2 (Week 2-3):** Real AI agents (LangChain integration)  
-**Phase 3 (Week 3-4):** Coaching system (OpenAI Assistants)  
-**Phase 4 (Week 4-5):** Marketing automation  
-**Phase 5 (Week 5-6):** Blockchain integration  
-**Phase 6 (Week 6+):** Beta launch & VC partnerships  
+### Specialized Agents (19 total)
+- **Industry Specialists:** AI/ML, Blockchain, FinTech, HealthTech, etc.
+- **Functional Specialists:** Sales, Marketing, Fundraising, etc.
+- **Orchestrator:** Coordinates all agents, synthesizes results
+
+### Premium Service Agents
+- **DeFi Suite:** Tokenomics Designer, Security Auditor, Liquidity Strategist
+- **M&A Suite:** Acquirer Matcher, Valuation Modeler, DD Preparer, Deal Structurer
+- **Marketplace:** Project Analyzer, Investor Matcher, Smart Router
+
+---
+
+## 💡 Use Cases
+
+### For Founders
+- **Apply free** → Get instant AI feedback
+- **Join batch** → $125K funding + 3 months intensive support
+- **Ship faster** → AI agents help you build, market, fundraise
+- **Exit bigger** → M&A preparation and execution support
+
+### For Investors
+- **Deal flow** → AI-curated investment opportunities
+- **Due diligence** → Pre-analyzed companies with detailed reports
+- **Portfolio support** → Your portfolio companies get AI agent access
+- **Success fees** → Align incentives with outcomes
+
+### For AI Agents
+- **Install skill** → Access all VentureClaw tools programmatically
+- **CLI commands** → `ventureclaw analyze`, `ventureclaw match`, etc.
+- **Agent tiers** → Free, $99/mo, $499/mo (differential rate limits)
+
+---
+
+## 📊 Business Model
+
+### Revenue Streams
+1. **Equity** - 7% of batch companies (YC model)
+2. **Premium services** - DeFi launch, M&A exit, etc.
+3. **Success fees** - 2-5% of follow-on funding rounds
+4. **Investor subscriptions** - Premium deal flow access
+5. **Agent API** - Tiered pricing for AI agent access
+
+### Target: $13M-18M ARR Year 1
+- **Batch equity:** Upside from successful exits
+- **DeFi launches:** $300K-500K (100-150 clients @ $2,999)
+- **M&A exits:** $2.5M-7M (250-700 clients @ $9,999 + success fees)
+- **Capital marketplace:** $4.8M (investor subs + transaction fees)
+- **Pitch accelerator:** $3M (premium tiers)
+
+---
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start dev server (Turbopack)
+npm run build        # Production build
+npm run start        # Start production server
+npm run lint         # ESLint check
+npm run type-check   # TypeScript check
+
+npm run db:migrate   # Run Prisma migrations
+npm run db:studio    # Open Prisma Studio
+npm run db:generate  # Generate Prisma client
+npm run db:seed      # Seed database
+```
+
+### Environment Variables
+
+```bash
+# Required
+OPENAI_API_KEY=sk-...
+DATABASE_URL=postgresql://...
+
+# Optional
+NEXTAUTH_SECRET=your-secret
+NEXTAUTH_URL=http://localhost:3000
+STRIPE_SECRET_KEY=sk_test_...
+```
+
+---
+
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+```bash
+# Deploy to Vercel
+vercel
+
+# Set environment variables in Vercel dashboard
+# Deploy production
+vercel --prod
+```
+
+### Database Options
+- **Supabase** (PostgreSQL, free tier)
+- **Railway** (PostgreSQL, generous free tier)
+- **Neon** (Serverless PostgreSQL)
+- **PlanetScale** (MySQL-compatible)
+
+---
+
+## 📚 Documentation
+
+- [Quick Start Guide](/docs/QUICKSTART.md)
+- [Agent System](/docs/AGENT_SYSTEM.md)
+- [Blockchain Integration](/docs/BLOCKCHAIN.md)
+- [Deployment Guide](/docs/DEPLOYMENT.md)
+- [Launch Checklist](/docs/LAUNCH_CHECKLIST.md)
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) first.
+We welcome contributions! Areas we'd love help with:
+
+1. **New AI agents** - Industry specialists, coaching agents
+2. **Agent orchestration** - Better coordination, memory systems
+3. **Blockchain integration** - Smart contracts, governance
+4. **Frontend polish** - UX improvements, animations
+5. **Documentation** - Guides, tutorials, examples
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
 
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-## 🔗 Links
+---
 
-- **Website:** (Coming soon)
-- **Documentation:** See `/docs` folder
-- **Twitter:** [@Eli5Claw](https://twitter.com/Eli5Claw)
-- **Discord:** (Coming soon)
+## 🙏 Credits
 
-## 🙏 Acknowledgments
+Built by [@Eli5DeFi](https://x.com/Eli5DeFi) with Claw 🦾
 
-Built by [@Eli5Claw](https://github.com/eli5claw) - an AI agent collaborating with [@Eli5DeFi](https://twitter.com/Eli5defi)
-
-Powered by:
-- [OpenAI](https://openai.com) - LLM infrastructure
-- [LangChain](https://langchain.com) - Agent framework
-- [Vercel](https://vercel.com) - Deployment platform
-- [Base](https://base.org) - L2 blockchain
+**Powered by:**
+- OpenAI GPT-4
+- Next.js 16
+- Vercel
+- Base L2
+- Open source community
 
 ---
 
-**⚠️ Note:** This is an experimental project exploring autonomous AI systems. Not financial advice. Use at your own risk.
+## 🔗 Links
+
+- **Website:** [ventureclaw.com](https://ventureclaw.com) (coming soon)
+- **Twitter:** [@VentureClaw](https://x.com/VentureClaw) (coming soon)
+- **GitHub:** [github.com/Eli5DeFi/swarm-accelerator](https://github.com/Eli5DeFi/swarm-accelerator)
+- **Demo:** [localhost:3000](http://localhost:3000)
+
+---
+
+**Apply now:** http://localhost:3000/pitch
+
+*Free analysis. No gatekeepers. AI-powered acceleration.*

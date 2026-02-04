@@ -23,63 +23,63 @@ const agents = [
 
 // Stats data
 const stats = [
-  { value: "$47M+", label: "Total Funded" },
-  { value: "234", label: "Startups Accelerated" },
-  { value: "89", label: "VC Partners" },
-  { value: "4.8s", label: "Avg Analysis Time" },
+  { value: "$125K", label: "Seed Investment" },
+  { value: "7%", label: "Equity Stake" },
+  { value: "Free", label: "Application" },
+  { value: "3 months", label: "Batch Duration" },
 ];
 
 // How it works steps
 const steps = [
   {
     step: 1,
-    title: "Submit Your Pitch",
-    description: "Upload your deck and provide key details about your startup. Our AI agents begin analysis immediately.",
+    title: "Apply Free",
+    description: "Submit your startup idea or company. AI agents analyze instantly - no waiting, no fees.",
     icon: RocketLaunchIcon,
   },
   {
     step: 2,
-    title: "AI Swarm Analysis",
-    description: "Four specialized agents evaluate financials, technology, market potential, and compliance simultaneously.",
+    title: "Join the Batch",
+    description: "Best companies accepted into our 3-month program. Get $125K for 7% equity. Work with AI agent swarms daily.",
     icon: SparklesIcon,
   },
   {
     step: 3,
-    title: "Get Funded & Connected",
-    description: "Receive valuation, connect with matching VCs, and access our full accelerator ecosystem.",
+    title: "Build & Exit",
+    description: "Ship product, find customers, raise follow-on rounds. AI agents help from MVP to M&A.",
     icon: BanknotesIcon,
   },
 ];
 
-// Product suite
+// AI Agent Tools (included in batch program)
 const products = [
   {
-    title: "🎯 Pitch Accelerator",
-    description: "4 AI agents analyze your startup in 20 seconds",
+    title: "🎯 Instant Analysis",
+    description: "AI agents analyze your startup in seconds",
     href: "/pitch",
-    price: "Free - $499",
-    features: ["Financial analysis", "Technical DD", "Market research", "Legal compliance"],
+    price: "Free for all",
+    features: ["Financial modeling", "Technical review", "Market sizing", "Competitive analysis"],
   },
   {
-    title: "🔥 DeFi Protocol Accelerator",
-    description: "Complete DeFi launch: tokenomics, security, liquidity",
+    title: "🚀 Product Builder",
+    description: "AI agents help you ship faster",
     href: "/defi",
-    price: "$2,999",
-    features: ["Tokenomics design (ve-model)", "Smart contract audit", "Liquidity strategy", "72-hour delivery"],
+    price: "Batch members",
+    features: ["Architecture design", "Code review", "Security audit", "Best practices"],
   },
   {
-    title: "💰 Capital Marketplace",
-    description: "AI-powered investor matching + OTC trading",
+    title: "💰 Investor Network",
+    description: "AI-powered investor matching",
     href: "/marketplace-demo",
-    price: "$199 - $999/mo",
-    features: ["Investor matching", "OTC order book", "Dark pool", "Success fees"],
+    price: "Success fees",
+    features: ["VC introductions", "Angel network", "Follow-on rounds", "Demo day prep"],
   },
   {
-    title: "🚀 M&A Exit Accelerator",
-    description: "Complete exit analysis: valuation, acquirers, DD prep",
+    title: "🏆 Exit Strategy",
+    description: "M&A preparation and execution",
     href: "/exit",
-    price: "$9,999",
-    features: ["20-30 acquirer matches", "Valuation range", "Due diligence prep", "Deal structure"],
+    price: "Success fees",
+    features: ["Acquirer matching", "Valuation modeling", "DD preparation", "Deal structuring"],
   },
 ];
 
@@ -183,51 +183,40 @@ function HeroSection() {
               transition={{ delay: 0.3 }}
             >
               <SparklesIcon className="w-4 h-4 text-[#00f0ff]" />
-              <span className="text-sm text-[var(--text-secondary)]">AI-Powered Accelerator</span>
+              <span className="text-sm text-[var(--text-secondary)]">YCombinator × AI Agents</span>
             </motion.div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-              <span className="text-white">Pitch to the</span>
+              <span className="text-white">Build Your</span>
               <br />
-              <span className="gradient-text">Agent Swarm</span>
+              <span className="gradient-text">Startup with AI</span>
             </h1>
 
             <p className="text-xl text-[var(--text-secondary)] mb-8 max-w-xl">
-              Complete AI platform: <span className="text-[#00f0ff]">Pitch Analysis</span>, 
-              <span className="text-[#a855f7]"> Investor Matching</span>, 
-              <span className="text-[#00f0ff]"> OTC Trading</span>, and 
-              <span className="text-[#a855f7]"> M&A Exit</span> — all powered by AI agents.
+              <span className="text-[#00f0ff]">Apply free</span>. Get instant AI analysis. 
+              Join our batch for <span className="text-[#a855f7]">$125K funding</span>. 
+              Build with AI agent swarms from <span className="text-[#00f0ff]">idea to exit</span>.
             </p>
 
             <div className="flex flex-wrap gap-4">
               <Link href="/pitch">
                 <motion.button
-                  className="btn-primary text-lg flex items-center gap-2"
+                  className="btn-primary text-lg flex items-center gap-2 px-8 py-4"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <RocketLaunchIcon className="w-5 h-5" />
-                  Start Pitching
+                  <RocketLaunchIcon className="w-6 h-6" />
+                  Apply Now (Free)
                 </motion.button>
               </Link>
-              <Link href="/marketplace-demo">
+              <Link href="/pricing">
                 <motion.button
-                  className="btn-secondary text-lg flex items-center gap-2"
+                  className="btn-secondary text-lg flex items-center gap-2 px-8 py-4"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <BanknotesIcon className="w-5 h-5" />
-                  Capital Marketplace
-                </motion.button>
-              </Link>
-              <Link href="/exit">
-                <motion.button
-                  className="btn-secondary text-lg flex items-center gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <ChartBarIcon className="w-5 h-5" />
-                  M&A Exit
+                  <SparklesIcon className="w-6 h-6" />
+                  Learn More
                 </motion.button>
               </Link>
             </div>
