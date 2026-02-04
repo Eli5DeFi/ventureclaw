@@ -3,7 +3,7 @@
 
 import OpenAI from 'openai';
 import type { ProjectProfile, InvestorProfile } from './project-analyzer';
-import type { OrderBookSnapshot } from '../matching/otc-orderbook';
+import type { OrderBookSnapshot } from '../../matching/otc-orderbook';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

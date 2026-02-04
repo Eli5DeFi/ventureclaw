@@ -166,7 +166,8 @@ export function withAgentDetection(
     const agentContext = detectAgent(req);
     
     // Check rate limit
-    const identifier = agentContext.apiKey || req.ip || 'anonymous';
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
+    const identifier = agentContext.apiKey || ip;
     const rateLimitResult = checkRateLimit(identifier, agentContext.rateLimit);
     
     if (!rateLimitResult.allowed) {

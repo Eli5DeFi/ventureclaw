@@ -435,7 +435,7 @@ Format:
     const noVotes = this.agents.filter(a => a.position === 'NO').length;
     const maybeVotes = this.agents.filter(a => a.position === 'MAYBE').length;
     
-    const decision = yesVotes > noVotes ? 'APPROVED' : 'REJECTED';
+    const decision: 'APPROVED' | 'REJECTED' = yesVotes > noVotes ? 'APPROVED' : 'REJECTED';
     const confidence = Math.abs(yesVotes - noVotes) / this.agents.length;
 
     console.log(`\n✅ Final Decision: ${decision} (${yesVotes} YES, ${noVotes} NO, ${maybeVotes} MAYBE)`);

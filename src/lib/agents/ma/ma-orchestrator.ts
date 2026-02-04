@@ -158,7 +158,7 @@ export async function orchestrateExitAnalysis(
     investorOwnership: input.investorOwnership,
     founderRetention: input.foundersStaying,
     taxBasis: input.totalRaised * (input.founderOwnership / 100), // Rough estimate
-    acquirerType: input.preferredAcquirerType || 'strategic',
+    acquirerType: (input.preferredAcquirerType === 'any' ? 'strategic' : input.preferredAcquirerType) || 'strategic',
     competitiveBidders: acquirers.topAcquirers.length > 5 ? 3 : 1,
     timelinePressure: input.timelinePressure,
     companyStage: input.stage,

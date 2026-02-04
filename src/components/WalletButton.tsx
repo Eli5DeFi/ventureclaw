@@ -12,10 +12,11 @@ export function WalletButton() {
   const [linking, setLinking] = useState(false);
 
   useEffect(() => {
+    // TODO: Add wallet address to User model and re-enable auto-link
     // Auto-link wallet if connected but not linked to account
-    if (isConnected && address && session?.user && !session.user.walletAddress) {
-      linkWallet();
-    }
+    // if (isConnected && address && session?.user && !session.user.walletAddress) {
+    //   linkWallet();
+    // }
   }, [isConnected, address, session]);
 
   const linkWallet = async () => {

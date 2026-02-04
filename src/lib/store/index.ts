@@ -78,7 +78,7 @@ export interface VCAgentPersona {
 interface AppState {
     // Startups
     startups: Startup[];
-    addStartup: (startup: Omit<Startup, 'id' | 'createdAt' | 'status'>) => string;
+    addStartup: (startup: Omit<Startup, 'id' | 'createdAt' | 'status'>) => Promise<string>;
     updateStartup: (id: string, updates: Partial<Startup>) => void;
     getStartup: (id: string) => Startup | undefined;
 

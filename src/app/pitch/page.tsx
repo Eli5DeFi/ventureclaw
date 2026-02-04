@@ -103,7 +103,7 @@ export default function PitchPage() {
 
         try {
             // Add startup to store
-            const startupId = addStartup(formData);
+            const startupId = await addStartup(formData);
 
             // Start analysis (runs in background)
             analyzeStartup(startupId);

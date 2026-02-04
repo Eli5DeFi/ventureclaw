@@ -147,7 +147,7 @@ export function getContractAddress(
   contract: 'swarmAccelerator' | 'usdc' | 'usdt'
 ): string | undefined {
   const contracts = SWARM_CONTRACTS[chainId as keyof typeof SWARM_CONTRACTS];
-  return contracts?.[contract];
+  return contracts?.[contract as keyof typeof contracts];
 }
 
 // Supported chains for the platform

@@ -222,7 +222,7 @@ export class OptimizedAnalysisOrchestrator {
           marketFeedback: market as any,
           legalFeedback: legal as any,
           
-          valuation: BigInt(synthesis.valuation),
+          valuation: Number(synthesis.valuation),
           recommendation: synthesis.recommendation,
           summary: synthesis.summary,
           
