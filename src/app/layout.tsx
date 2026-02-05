@@ -1,43 +1,39 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import WaitlistBanner from "@/components/WaitlistBanner";
-import Header from "@/components/Header";
-import { SessionProvider } from "next-auth/react";
-import { Web3Provider } from "@/components/Web3Provider";
-import Providers from "@/components/Providers";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 export const metadata: Metadata = {
-  title: "VentureClaw | YCombinator Powered by AI Agents",
-  description: "Apply free. Get AI-powered analysis. Join our batch. Build with AI agent swarms. The future of startup acceleration is here.",
-  keywords: ["AI accelerator", "startup funding", "YCombinator alternative", "pitch analysis", "venture capital", "seed funding"],
-  openGraph: {
-    title: "VentureClaw | YCombinator Powered by AI Agents",
-    description: "Apply free. Get AI-powered analysis. Join our batch. Build with AI agent swarms.",
-    type: "website",
-  },
+  title: "VentureClaw - AI Shark Tank Accelerator",
+  description:
+    "Pitch your startup to AI sharks. Get judged. Get funded through futarchy.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.variable} antialiased`}>
-        <Providers>
-          <WaitlistBanner />
-          <Header />
-          <div className="pt-32">
-            {children}
+    <html lang="en">
+      <body className="min-h-screen">
+        <nav className="border-b border-[var(--border)] px-6 py-4">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="/" className="text-xl font-bold tracking-tight">
+              Venture<span className="text-[var(--accent)]">Claw</span>
+            </a>
+            <div className="flex gap-6 text-sm text-[var(--text-muted)]">
+              <a href="/pitch" className="hover:text-white transition">
+                Pitch
+              </a>
+              <a href="/tank" className="hover:text-white transition">
+                Shark Tank
+              </a>
+              <a href="/launchpad" className="hover:text-white transition">
+                Launchpad
+              </a>
+            </div>
           </div>
-        </Providers>
+        </nav>
+        <main>{children}</main>
       </body>
     </html>
   );
