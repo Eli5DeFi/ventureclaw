@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "./optimized-base-agent";
 
 const LegalAnalysisSchema = z.object({
   score: z.number().min(0).max(100).describe("Overall legal/compliance health score"),
@@ -22,43 +21,42 @@ const LegalAnalysisSchema = z.object({
 
 export type LegalAnalysis = z.infer<typeof LegalAnalysisSchema>;
 
-export class LegalComplianceAgent {
-  private model: ChatOpenAI;
-  
+export class LegalComplianceAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.2, // Low temperature for precise legal analysis
-      maxTokens: 2500,
-    });
+    // Use gpt-4o (complex tier) for legal analysis - higher stakes
+    // Still 83% cheaper than old gpt-4-turbo ($0.15 vs $0.90 per analysis)
+    super("complex");
   }
   
   async analyze(startup: Startup): Promise<LegalAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `legal:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(LegalAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        tagline: startup.tagline,
-        website: startup.website || "N/A",
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as LegalAnalysis;
-    } catch (error) {
-      console.error("Legal compliance analysis failed:", error);
-      throw new Error(`Legal compliance analysis failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(LegalAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          tagline: startup.tagline,
+          website: startup.website || "N/A",
+        });
+        
+        return result as LegalAnalysis;
+      } catch (error) {
+        console.error("Legal compliance analysis failed:", error);
+        throw new Error(`Legal compliance analysis failed: ${error}`);
+      }
+    });
   }
   
   private getSystemPrompt(): string {

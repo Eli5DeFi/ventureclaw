@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "./optimized-base-agent";
 
 const MarketAnalysisSchema = z.object({
   score: z.number().min(0).max(100).describe("Overall market opportunity score"),
@@ -21,43 +20,42 @@ const MarketAnalysisSchema = z.object({
 
 export type MarketAnalysis = z.infer<typeof MarketAnalysisSchema>;
 
-export class MarketResearchAgent {
-  private model: ChatOpenAI;
-  
+export class MarketResearchAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.4, // Slightly higher for creative market insights
-      maxTokens: 2500,
-    });
+    // Use gpt-4o-mini for market analysis (simple tier)
+    // 98.5% cheaper than old gpt-4-turbo ($0.025 vs $0.90 per analysis)
+    super("simple");
   }
   
   async analyze(startup: Startup): Promise<MarketAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `market:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(MarketAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        tagline: startup.tagline,
-        website: startup.website || "N/A",
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as MarketAnalysis;
-    } catch (error) {
-      console.error("Market research failed:", error);
-      throw new Error(`Market research failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(MarketAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          tagline: startup.tagline,
+          website: startup.website || "N/A",
+        });
+        
+        return result as MarketAnalysis;
+      } catch (error) {
+        console.error("Market research failed:", error);
+        throw new Error(`Market research failed: ${error}`);
+      }
+    });
   }
   
   private getSystemPrompt(): string {

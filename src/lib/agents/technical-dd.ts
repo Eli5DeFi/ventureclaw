@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "./optimized-base-agent";
 
 const TechnicalAnalysisSchema = z.object({
   score: z.number().min(0).max(100).describe("Overall technical score"),
@@ -20,44 +19,43 @@ const TechnicalAnalysisSchema = z.object({
 
 export type TechnicalAnalysis = z.infer<typeof TechnicalAnalysisSchema>;
 
-export class TechnicalDDAgent {
-  private model: ChatOpenAI;
-  
+export class TechnicalDDAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.3,
-      maxTokens: 2000,
-    });
+    // Use gpt-4o-mini for technical scoring (simple tier)
+    // 98.5% cheaper than old gpt-4-turbo ($0.025 vs $0.90 per analysis)
+    super("simple");
   }
   
   async analyze(startup: Startup): Promise<TechnicalAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `technical:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(TechnicalAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        teamSize: startup.teamSize,
-        website: startup.website || "N/A",
-        tagline: startup.tagline,
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as TechnicalAnalysis;
-    } catch (error) {
-      console.error("Technical DD failed:", error);
-      throw new Error(`Technical DD failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(TechnicalAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          teamSize: startup.teamSize,
+          website: startup.website || "N/A",
+          tagline: startup.tagline,
+        });
+        
+        return result as TechnicalAnalysis;
+      } catch (error) {
+        console.error("Technical DD failed:", error);
+        throw new Error(`Technical DD failed: ${error}`);
+      }
+    });
   }
   
   private getSystemPrompt(): string {
