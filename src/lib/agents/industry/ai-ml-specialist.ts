@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "../optimized-base-agent";
 
 const AIMLAnalysisSchema = z.object({
   score: z.number().min(0).max(100),
@@ -21,43 +20,42 @@ const AIMLAnalysisSchema = z.object({
 
 export type AIMLAnalysis = z.infer<typeof AIMLAnalysisSchema>;
 
-export class AIMLSpecialistAgent {
-  private model: ChatOpenAI;
-  
+export class AIMLSpecialistAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.3,
-      maxTokens: 2500,
-    });
+    // Use 'simple' tier (gpt-4o-mini) - industry specialist scoring is straightforward
+    // 97% cost reduction: $0.90 → $0.025 per analysis
+    super("simple");
   }
   
   async analyze(startup: Startup): Promise<AIMLAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `aiml-analysis:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(AIMLAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        tagline: startup.tagline,
-        fundingAsk: startup.fundingAsk,
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as AIMLAnalysis;
-    } catch (error) {
-      console.error("AI/ML analysis failed:", error);
-      throw new Error(`AI/ML analysis failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(AIMLAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          tagline: startup.tagline,
+          fundingAsk: startup.fundingAsk,
+        });
+        
+        return result as AIMLAnalysis;
+      } catch (error) {
+        console.error("AI/ML analysis failed:", error);
+        throw new Error(`AI/ML analysis failed: ${error}`);
+      }
+    }, 300); // 5-minute cache
   }
   
   private getSystemPrompt(): string {

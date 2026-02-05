@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "../optimized-base-agent";
 
 const FinTechAnalysisSchema = z.object({
   score: z.number().min(0).max(100),
@@ -21,43 +20,42 @@ const FinTechAnalysisSchema = z.object({
 
 export type FinTechAnalysis = z.infer<typeof FinTechAnalysisSchema>;
 
-export class FinTechRegulatorAgent {
-  private model: ChatOpenAI;
-  
+export class FinTechRegulatorAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.2, // Lower for regulatory precision
-      maxTokens: 2500,
-    });
+    // Use 'complex' tier (gpt-4o) - regulatory analysis is high-stakes
+    // Still 83% cheaper than old gpt-4-turbo: $0.90 → $0.15 per analysis
+    super("complex");
   }
   
   async analyze(startup: Startup): Promise<FinTechAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `fintech-analysis:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(FinTechAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        tagline: startup.tagline,
-        fundingAsk: startup.fundingAsk,
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as FinTechAnalysis;
-    } catch (error) {
-      console.error("FinTech regulatory analysis failed:", error);
-      throw new Error(`FinTech regulatory analysis failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(FinTechAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          tagline: startup.tagline,
+          fundingAsk: startup.fundingAsk,
+        });
+        
+        return result as FinTechAnalysis;
+      } catch (error) {
+        console.error("FinTech regulatory analysis failed:", error);
+        throw new Error(`FinTech regulatory analysis failed: ${error}`);
+      }
+    }, 300); // 5-minute cache
   }
   
   private getSystemPrompt(): string {

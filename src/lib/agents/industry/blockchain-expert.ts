@@ -1,8 +1,7 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import type { Startup } from "@prisma/client";
-import { getModelName } from "@/lib/model-selector";
+import { OptimizedBaseAgent } from "../optimized-base-agent";
 
 const BlockchainAnalysisSchema = z.object({
   score: z.number().min(0).max(100),
@@ -21,43 +20,42 @@ const BlockchainAnalysisSchema = z.object({
 
 export type BlockchainAnalysis = z.infer<typeof BlockchainAnalysisSchema>;
 
-export class BlockchainExpertAgent {
-  private model: ChatOpenAI;
-  
+export class BlockchainExpertAgent extends OptimizedBaseAgent {
   constructor() {
-    // Use smart model selection - "analyze" task uses GPT-4 Turbo
-    this.model = new ChatOpenAI({
-      modelName: getModelName("analyze"),
-      temperature: 0.3,
-      maxTokens: 2500,
-    });
+    // Use 'simple' tier (gpt-4o-mini) - industry specialist scoring is straightforward
+    // 97% cost reduction: $0.90 → $0.025 per analysis
+    super("simple");
   }
   
   async analyze(startup: Startup): Promise<BlockchainAnalysis> {
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", this.getSystemPrompt()],
-      ["human", this.getAnalysisPrompt()],
-    ]);
+    const cacheKey = `blockchain-analysis:${startup.id}`;
     
-    const chain = prompt.pipe(
-      this.model.withStructuredOutput(BlockchainAnalysisSchema)
-    );
-    
-    try {
-      const result = await chain.invoke({
-        name: startup.name,
-        industry: startup.industry,
-        stage: startup.stage,
-        description: startup.description,
-        tagline: startup.tagline,
-        fundingAsk: startup.fundingAsk,
-      });
+    return await this.executeWithCache(cacheKey, startup, async () => {
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", this.getSystemPrompt()],
+        ["human", this.getAnalysisPrompt()],
+      ]);
       
-      return result as BlockchainAnalysis;
-    } catch (error) {
-      console.error("Blockchain analysis failed:", error);
-      throw new Error(`Blockchain analysis failed: ${error}`);
-    }
+      const chain = prompt.pipe(
+        this.model.withStructuredOutput(BlockchainAnalysisSchema)
+      );
+      
+      try {
+        const result = await chain.invoke({
+          name: startup.name,
+          industry: startup.industry,
+          stage: startup.stage,
+          description: startup.description,
+          tagline: startup.tagline,
+          fundingAsk: startup.fundingAsk,
+        });
+        
+        return result as BlockchainAnalysis;
+      } catch (error) {
+        console.error("Blockchain analysis failed:", error);
+        throw new Error(`Blockchain analysis failed: ${error}`);
+      }
+    }, 300); // 5-minute cache
   }
   
   private getSystemPrompt(): string {
