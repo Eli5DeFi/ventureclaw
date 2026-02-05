@@ -5,6 +5,7 @@ import { analyzeStartupOptimized as analyzeStartup } from "@/lib/agents/orchestr
 import { performSecurityCheck, logSecurityEvent } from "@/lib/security/anti-sybil";
 import { rateLimit } from "@/lib/rate-limit";
 import { withCache } from "@/lib/cache";
+import { withPerformanceMonitoring } from "@/lib/monitoring/performance";
 
 // Validation schema
 const CreatePitchSchema = z.object({
@@ -22,7 +23,7 @@ const CreatePitchSchema = z.object({
   pitchVideo: z.string().url().optional().nullable(),
 });
 
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   // Rate limiting - prevent spam/abuse
   const rateLimitResponse = rateLimit(request, 5); // 5 pitches per minute max
   if (rateLimitResponse) return rateLimitResponse;
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+async function handleGET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -182,4 +183,13 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// Export handlers with performance monitoring
+export async function POST(request: NextRequest) {
+  return withPerformanceMonitoring('/api/pitches', 'POST', () => handlePOST(request));
+}
+
+export async function GET(request: NextRequest) {
+  return withPerformanceMonitoring('/api/pitches', 'GET', () => handleGET(request));
 }
