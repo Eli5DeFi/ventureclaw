@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const WaitlistSchema = z.object({
   email: z.string().email(),
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    console.error("Error adding to waitlist:", error);
+    logger.error("Error adding to waitlist:", error);
     return NextResponse.json(
       {
         success: false,
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error("Error fetching waitlist count:", error);
+    logger.error("Error fetching waitlist count:", error);
     return NextResponse.json(
       {
         success: false,

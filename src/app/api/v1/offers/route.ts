@@ -3,6 +3,8 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
+import { z } from 'zod';
 
 async function authenticateApiKey(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -38,6 +40,16 @@ export async function GET(request: Request) {
     if (!pitchId) {
       return NextResponse.json(
         { error: 'pitchId query parameter required' },
+        { status: 400 }
+      );
+    }
+    
+    // Validate UUID format
+    const uuidSchema = z.string().uuid();
+    const validation = uuidSchema.safeParse(pitchId);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Invalid pitchId format - must be a valid UUID' },
         { status: 400 }
       );
     }
@@ -105,7 +117,7 @@ export async function GET(request: Request) {
       count: offers.length,
     });
   } catch (error) {
-    console.error('API v1 offers error:', error);
+    logger.error('API v1 offers error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

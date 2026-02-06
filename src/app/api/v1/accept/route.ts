@@ -3,6 +3,16 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
+import { z } from 'zod';
+
+/**
+ * Validation schema for accepting funding offers
+ */
+const AcceptFundingSchema = z.object({
+  pitchId: z.string().uuid('Invalid pitch ID format'),
+  offerId: z.string().regex(/^offer_[12]$/, 'Invalid offer ID format'),
+});
 
 async function authenticateApiKey(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -32,14 +42,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const { pitchId, offerId } = await request.json();
-
-    if (!pitchId || !offerId) {
+    const body = await request.json();
+    
+    // Validate input
+    const validation = AcceptFundingSchema.safeParse(body);
+    if (!validation.success) {
       return NextResponse.json(
-        { error: 'pitchId and offerId required' },
+        { 
+          error: 'Validation failed',
+          details: validation.error.issues.map(i => ({ field: i.path.join('.'), message: i.message }))
+        },
         { status: 400 }
       );
     }
+    
+    const { pitchId, offerId } = validation.data;
 
     // Verify pitch belongs to user
     const pitch = await prisma.startup.findUnique({
@@ -153,7 +170,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error('API v1 accept error:', error);
+    logger.error('API v1 accept error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

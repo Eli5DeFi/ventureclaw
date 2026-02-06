@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeStartupOptimized as analyzeStartup } from "@/lib/agents/orchestrator-optimized";
 import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   request: NextRequest,
@@ -44,7 +45,7 @@ export async function POST(
     });
     
   } catch (error) {
-    console.error("Error analyzing startup:", error);
+    logger.error("Error analyzing startup:", error);
     return NextResponse.json(
       {
         success: false,

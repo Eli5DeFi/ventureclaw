@@ -6,6 +6,7 @@ import { performSecurityCheck, logSecurityEvent } from "@/lib/security/anti-sybi
 import { rateLimit } from "@/lib/rate-limit";
 import { withCache } from "@/lib/cache";
 import { withPerformanceMonitoring } from "@/lib/monitoring/performance";
+import { logger } from "@/lib/logger";
 
 // Validation schema
 const CreatePitchSchema = z.object({
@@ -77,14 +78,10 @@ async function handlePOST(request: NextRequest) {
     // Trigger analysis asynchronously (don't wait for it)
     analyzeStartup(startup.id)
       .then(() => {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`Analysis completed for startup: ${startup.id}`);
-        }
+        logger.log(`Analysis completed for startup: ${startup.id}`);
       })
       .catch((error) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(`Analysis failed for startup: ${startup.id}`, error);
-        }
+        logger.error(`Analysis failed for startup: ${startup.id}`, error);
         // TODO: In production, send to error tracking service (e.g., Sentry)
       });
     
@@ -109,9 +106,7 @@ async function handlePOST(request: NextRequest) {
       );
     }
     
-    if (process.env.NODE_ENV === 'development') {
-      console.error("Error creating pitch:", error);
-    }
+    logger.error("Error creating pitch:", error);
     
     return NextResponse.json(
       {
@@ -171,9 +166,7 @@ async function handleGET(request: NextRequest) {
     return NextResponse.json(result);
     
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error("Error fetching pitches:", error);
-    }
+    logger.error("Error fetching pitches:", error);
     
     return NextResponse.json(
       {

@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { withCache } from '@/lib/cache';
+import { logger } from '@/lib/logger';
 
 export async function GET() {
   try {
@@ -66,7 +67,7 @@ export async function GET() {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error('Failed to fetch pitches:', error);
+    logger.error('Failed to fetch pitches:', error);
     return NextResponse.json(
       { error: 'Failed to fetch pitches' },
       { status: 500 }

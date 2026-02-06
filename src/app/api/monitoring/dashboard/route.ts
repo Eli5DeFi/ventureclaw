@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { performanceMonitor } from '@/lib/monitoring/performance';
+import { logger } from '@/lib/logger';
 
 /**
  * Performance Monitoring Dashboard API
@@ -43,7 +44,7 @@ export async function GET(request: Request) {
       timestamp: Date.now(),
     });
   } catch (error) {
-    console.error('Dashboard error:', error);
+    logger.error('Dashboard error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch monitoring data' },
       { status: 500 }
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
       thresholds: performanceMonitor.getAlertThresholds(),
     });
   } catch (error) {
-    console.error('Threshold update error:', error);
+    logger.error('Threshold update error:', error);
     return NextResponse.json(
       { error: 'Failed to update thresholds' },
       { status: 500 }
@@ -86,7 +87,7 @@ export async function DELETE() {
     performanceMonitor.clearAlerts();
     return NextResponse.json({ message: 'Alerts cleared' });
   } catch (error) {
-    console.error('Clear alerts error:', error);
+    logger.error('Clear alerts error:', error);
     return NextResponse.json(
       { error: 'Failed to clear alerts' },
       { status: 500 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 export async function GET(
   request: NextRequest,
@@ -41,7 +42,7 @@ export async function GET(
     });
     
   } catch (error) {
-    console.error("Error fetching pitch:", error);
+    logger.error("Error fetching pitch:", error);
     return NextResponse.json(
       {
         success: false,
@@ -91,7 +92,7 @@ export async function PATCH(
     });
     
   } catch (error) {
-    console.error("Error updating pitch:", error);
+    logger.error("Error updating pitch:", error);
     return NextResponse.json(
       {
         success: false,

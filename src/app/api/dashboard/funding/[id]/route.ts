@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 export async function GET(
   request: Request,
@@ -51,7 +52,7 @@ export async function GET(
       funding,
     });
   } catch (error) {
-    console.error('Failed to fetch funding:', error);
+    logger.error('Failed to fetch funding:', error);
     return NextResponse.json(
       { error: 'Failed to fetch funding details' },
       { status: 500 }

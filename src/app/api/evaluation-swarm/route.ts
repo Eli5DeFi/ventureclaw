@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { EvaluationOrchestrator, Pitch } from '@/lib/agents/evaluation-swarm/orchestrator';
+import { logger } from '@/lib/logger';
 
 /**
  * POST /api/evaluation-swarm
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
       evaluation,
     });
   } catch (error: any) {
-    console.error('Evaluation swarm error:', error);
+    logger.error('Evaluation swarm error:', error);
     return NextResponse.json(
       {
         error: 'Evaluation failed',

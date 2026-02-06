@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { verifyMessage } from 'viem';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: Request) {
   try {
@@ -66,7 +67,7 @@ export async function POST(request: Request) {
       address: address.toLowerCase(),
     });
   } catch (error) {
-    console.error('Failed to link wallet:', error);
+    logger.error('Failed to link wallet:', error);
     return NextResponse.json(
       { error: 'Failed to link wallet' },
       { status: 500 }

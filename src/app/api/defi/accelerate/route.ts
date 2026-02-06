@@ -6,6 +6,7 @@ import {
   orchestrateDeFiAccelerator,
   type DeFiProtocolInput,
 } from '@/lib/agents/defi/defi-orchestrator';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log('[DeFi API] Starting analysis for:', body.name);
+    logger.log('[DeFi API] Starting analysis for:', body.name);
 
     // Build input
     const input: DeFiProtocolInput = {
@@ -55,14 +56,14 @@ export async function POST(request: NextRequest) {
     // Run orchestrator
     const report = await orchestrateDeFiAccelerator(input);
 
-    console.log('[DeFi API] Analysis complete');
+    logger.log('[DeFi API] Analysis complete');
 
     return NextResponse.json({
       success: true,
       report,
     });
   } catch (error) {
-    console.error('[DeFi API] Error:', error);
+    logger.error('[DeFi API] Error:', error);
     return NextResponse.json(
       {
         error: 'Failed to run DeFi analysis',

@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 export async function GET(
   request: Request,
@@ -68,7 +69,7 @@ export async function GET(
       offers,
     });
   } catch (error) {
-    console.error('Failed to fetch pitch:', error);
+    logger.error('Failed to fetch pitch:', error);
     return NextResponse.json(
       { error: 'Failed to fetch pitch details' },
       { status: 500 }
