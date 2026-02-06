@@ -9,6 +9,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 // UUID validation schema
 const UUIDSchema = z.string().uuid('Invalid ID format');
@@ -168,10 +169,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
-    // Only log in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('API v1 funding error:', error);
-    }
+    logger.error('API v1 funding error:', error);
     
     // Check for specific database errors
     if (error instanceof Error && error.message.includes('not found')) {

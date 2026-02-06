@@ -11,6 +11,7 @@ import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 // Validation schema with proper email format and password requirements
 const SignupSchema = z.object({
@@ -90,10 +91,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    // Log error securely (in production, use proper logging service)
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Signup error:', error);
-    }
+    logger.error('Signup error:', error);
     
     // Check for database-specific errors
     if (error instanceof Error) {

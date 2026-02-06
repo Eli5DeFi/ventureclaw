@@ -11,6 +11,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 // Validation schema for offer acceptance
 const AcceptOfferSchema = z.object({
@@ -159,10 +160,7 @@ export async function POST(
       funding,
     });
   } catch (error) {
-    // Only log in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Failed to accept funding:', error);
-    }
+    logger.error('Failed to accept funding:', error);
     
     // Handle specific errors
     if (error instanceof Error) {
