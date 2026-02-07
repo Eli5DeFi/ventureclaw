@@ -44,7 +44,7 @@ export async function checkDuplicateStartup(startup: {
     where: {
       name: {
         equals: startup.name,
-        mode: "insensitive",
+        
       },
     },
   });
@@ -62,11 +62,11 @@ export async function checkDuplicateStartup(startup: {
     where: {
       founderEmail: {
         equals: startup.founderEmail,
-        mode: "insensitive",
+        
       },
       name: {
         contains: startup.name.split(" ")[0], // First word match
-        mode: "insensitive",
+        
       },
     },
   });
@@ -96,7 +96,7 @@ export async function checkRateLimit(email: string): Promise<{
     where: {
       founderEmail: {
         equals: email,
-        mode: "insensitive",
+        
       },
       createdAt: {
         gte: oneDayAgo,
@@ -118,7 +118,7 @@ export async function checkRateLimit(email: string): Promise<{
     where: {
       founderEmail: {
         equals: email,
-        mode: "insensitive",
+        
       },
       createdAt: {
         gte: oneWeekAgo,

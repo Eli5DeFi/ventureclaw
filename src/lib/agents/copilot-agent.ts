@@ -47,7 +47,7 @@ export class CopilotAgent {
       const history = await prisma.message.findMany({
         where: { 
           startupId, 
-          agentType: 'COPILOT' as any // TODO: Update after enum migration
+          agentType: 'COPILOT'
         },
         orderBy: { createdAt: 'asc' },
         take: 20,
@@ -191,14 +191,14 @@ Now, respond to ${founderName}'s message below.`;
           startupId,
           role: 'USER',
           content: userMessage,
-          agentType: 'COPILOT' as any, // TODO: Update after enum migration
-          metadata: { userId }, // Track which user sent it
+          agentType: 'COPILOT',
+          metadata: { userId },
         },
         {
           startupId,
           role: 'ASSISTANT',
           content: assistantReply,
-          agentType: 'COPILOT' as any,
+          agentType: 'COPILOT',
           metadata: { userId },
         },
       ],

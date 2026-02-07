@@ -235,21 +235,21 @@ model VC {
   firmName      String
   email         String   @unique
   fundSize      String
-  focusAreas    String // Array of industries
-  stagePreference String // Array of stages
+  focusAreas    String[] // Array of industries
+  stagePreference String[] // Array of stages
   
   investmentRangeMin  Int
   investmentRangeMax  Int
   
   thesis        String
-  portfolio     String // Company names or URLs
+  portfolio     String[] // Company names or URLs
   
   // AI Persona
   personaName   String?
   personaPersonality String?
   personaStyle  String?
   riskTolerance RiskTolerance @default(MODERATE)
-  priorities    String // What the persona values most
+  priorities    String[] // What the persona values most
   
   // OpenAI Assistant ID for the persona
   assistantId   String?
@@ -274,8 +274,8 @@ model CoachingSession {
   agentType   AgentType
   threadId    String?  // OpenAI thread ID for persistent conversations
   
-  messages    Json
-  actionItems Json
+  messages    Json[]
+  actionItems Json[]
   
   nextCheckIn DateTime?
   
@@ -403,7 +403,7 @@ model ExitAnalysis {
   recommendation  String?
   
   // Acquirer matches
-  topAcquirers    String // Top 10 acquirer names
+  topAcquirers    String[] // Top 10 acquirer names
   
   // Full report (JSON)
   fullReport      Json?
@@ -457,17 +457,17 @@ model Project {
   moat            String
   
   // Geography
-  geography       String
+  geography       String[]
   
   // AI-generated profile
   investmentThesis String?
-  keyRisks        String
-  keyOpportunities String
-  comparables     String
-  exitScenarios   String
+  keyRisks        String[]
+  keyOpportunities String[]
+  comparables     String[]
+  exitScenarios   String[]
   
   // Matching
-  idealInvestorTypes String
+  idealInvestorTypes String[]
   matches         Match[]
   
   // Status
@@ -490,22 +490,22 @@ model Investor {
   type            InvestorType
   
   // Criteria
-  focusAreas      String
-  stagePreference String
+  focusAreas      String[]
+  stagePreference String[]
   checkSizeMin    Int
   checkSizeMax    Int
-  geography       String
-  fundingTypes    String
+  geography       String[]
+  fundingTypes    FundingType[]
   
   // Preferences
   riskTolerance   RiskTolerance
   timeHorizon     String
   investmentThesis String
-  priorities      String
-  dealBreakers    String
+  priorities      String[]
+  dealBreakers    String[]
   
   // Portfolio
-  portfolioCompanies String
+  portfolioCompanies String[]
   
   // Matching
   matches         Match[]
@@ -539,8 +539,8 @@ model Match {
   
   // Analysis
   reasoning       String
-  synergies       String
-  concerns        String
+  synergies       String[]
+  concerns        String[]
   
   // Status
   status          MatchStatus @default(PENDING)
@@ -780,7 +780,7 @@ model MemorySearch {
   queryEmbedding  String?  // JSON array of query embedding
   
   resultCount     Int      @default(0)
-  topResultIds    String // IDs of top matching memories
+  topResultIds    String[] // IDs of top matching memories
   averageScore    Float?   // Average similarity score
   
   context         Json?    // Context at search time
