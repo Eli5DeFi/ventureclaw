@@ -861,6 +861,8 @@ enum AgentType {
   PORTFOLIO_MANAGEMENT
   NETWORK_CONNECTOR
   COMPLIANCE
+  
+  COPILOT
 }
 
 enum MessageRole {
