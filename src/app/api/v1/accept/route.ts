@@ -5,13 +5,14 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
+import { getOfferById, acceptOffer } from '@/lib/services/investment-offers';
 
 /**
  * Validation schema for accepting funding offers
  */
 const AcceptFundingSchema = z.object({
   pitchId: z.string().uuid('Invalid pitch ID format'),
-  offerId: z.string().regex(/^offer_[12]$/, 'Invalid offer ID format'),
+  offerId: z.string().min(1, 'Offer ID is required'),
 });
 
 async function authenticateApiKey(request: Request) {
@@ -83,22 +84,42 @@ export async function POST(request: Request) {
       );
     }
 
-    // TODO: Fetch real offer data
-    const offerDataMap: Record<string, { amount: number; equity: number; dealType: string }> = {
-      offer_1: { amount: Math.floor(pitch.fundingAsk * 0.8), equity: 15, dealType: 'SAFE' },
-      offer_2: { amount: pitch.fundingAsk, equity: 20, dealType: 'Equity' },
-    };
-    const offerData = offerDataMap[offerId as string];
+    // Get real offer details
+    const offer = await getOfferById(pitchId, offerId);
 
-    if (!offerData) {
+    if (!offer) {
       return NextResponse.json(
-        { error: 'Invalid offer ID' },
+        { error: 'Invalid offer ID or offer not found' },
         { status: 400 }
       );
     }
 
-    // Create funding with milestones
+    if (offer.status !== 'active') {
+      return NextResponse.json(
+        { error: 'Offer is no longer active' },
+        { status: 400 }
+      );
+    }
+
+    // Check if offer has expired
     const now = new Date();
+    if (new Date(offer.expiresAt) < now) {
+      return NextResponse.json(
+        { error: 'Offer has expired' },
+        { status: 400 }
+      );
+    }
+
+    // Mark offer as accepted
+    await acceptOffer(pitchId, offerId);
+
+    const offerData = {
+      amount: offer.offerAmount,
+      equity: offer.equity,
+      dealType: offer.dealType,
+    };
+
+    // Create funding with milestones
     const funding = await prisma.funding.create({
       data: {
         startupId: pitch.id,

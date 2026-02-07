@@ -22,7 +22,8 @@ import { FinTechRegulatorAgent, type FinTechAnalysis } from "./industry/fintech-
 import { selectAgents, getAgentBreakdown, type AgentDefinition } from "./agent-registry";
 import { prisma } from "../prisma";
 import { withCache } from "../cache";
-import { semanticMemory, storeEvaluationMemory } from "../memory/semantic-memory";
+// TODO: Re-enable when PostgreSQL migration is complete (Cycle #19)
+// import { semanticMemory, storeEvaluationMemory } from "../memory/semantic-memory";
 
 export interface CompleteAnalysis {
   financial: FinancialAnalysis;
@@ -90,6 +91,8 @@ export class OptimizedAnalysisOrchestrator {
     
     try {
       // 3. Search relevant historical evaluations (semantic memory)
+      // TODO: Re-enable when PostgreSQL migration is complete (Cycle #19)
+      /*
       const searchQuery = `
         ${startup.name} - ${startup.industry} startup
         Stage: ${startup.stage}
@@ -108,6 +111,8 @@ export class OptimizedAnalysisOrchestrator {
         console.log(`[Orchestrator] Found ${relevantMemories.length} relevant past evaluations`);
         console.log(`[Orchestrator] Average similarity: ${(relevantMemories.reduce((sum, m) => sum + m.score, 0) / relevantMemories.length * 100).toFixed(1)}%`);
       }
+      */
+      const relevantMemories: any[] = []; // Placeholder until PostgreSQL migration
       
       // 4. Determine all required agents upfront
       const selectedAgents = selectAgents(startup);
@@ -242,7 +247,7 @@ export class OptimizedAnalysisOrchestrator {
       console.log(`[Orchestrator] Analysis completed in ${analysisDuration}s`);
       
       // 9. Save analysis to database
-      await prisma.analysis.create({
+      const createdAnalysis = await prisma.analysis.create({
         data: {
           startupId,
           financialScore: financial?.score || 0,
@@ -266,7 +271,7 @@ export class OptimizedAnalysisOrchestrator {
         },
       });
       
-      // 10. Update startup status
+      // 10. Update startup status (offers are generated on-demand via API)
       await prisma.startup.update({
         where: { id: startupId },
         data: {
@@ -277,6 +282,8 @@ export class OptimizedAnalysisOrchestrator {
       });
       
       // 11. Store evaluation in semantic memory (for future context)
+      // TODO: Re-enable when PostgreSQL migration is complete (Cycle #19)
+      /*
       await storeEvaluationMemory(startupId, {
         overallScore: synthesis.overallScore,
         recommendation: synthesis.recommendation,
@@ -284,8 +291,8 @@ export class OptimizedAnalysisOrchestrator {
         keyStrengths: synthesis.keyStrengths,
         keyConcerns: synthesis.keyConcerns,
       });
-      
       console.log(`[Orchestrator] Stored evaluation in semantic memory`);
+      */
       
       return {
         financial: financial!,

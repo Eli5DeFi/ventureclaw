@@ -147,6 +147,9 @@ model Analysis {
   recommendation    Recommendation
   summary           String
   
+  // Investment offers generated from this analysis
+  offersGenerated   Json?    // Array of offer objects, will migrate to InvestmentOffer table when PostgreSQL is set up
+  
   // Metadata
   analysisStartedAt DateTime
   analysisCompletedAt DateTime?

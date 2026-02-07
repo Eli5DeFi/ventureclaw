@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
+import { getOffersForPitch } from '@/lib/services/investment-offers';
 
 export async function GET(
   request: Request,
@@ -41,28 +42,20 @@ export async function GET(
       return NextResponse.json({ error: 'Pitch not found' }, { status: 404 });
     }
 
-    // TODO: Fetch real investment offers
-    // For now, generate mock offers based on analysis
-    const offers = [];
-    if (pitch.analysis && pitch.analysis.recommendation === 'APPROVED' && !pitch.funding) {
-      offers.push({
-        id: 'offer_1',
-        amount: Math.floor(pitch.fundingAsk * 0.8), // 80% of ask
-        equity: 15,
-        dealType: 'SAFE',
-        terms: '5M cap, 20% discount. No board seat. Information rights included.',
-      });
-      
-      if (pitch.analysis.overallScore >= 85) {
-        offers.push({
-          id: 'offer_2',
-          amount: pitch.fundingAsk, // Full ask
-          equity: 20,
-          dealType: 'Equity',
-          terms: 'Priced round at $5M post-money. Board observer seat. Quarterly reporting.',
-        });
-      }
-    }
+    // Get real investment offers
+    const rawOffers = await getOffersForPitch(pitch.id);
+    
+    // Transform to dashboard format (simplified for UI)
+    const offers = rawOffers.map(offer => ({
+      id: offer.id,
+      amount: offer.offerAmount,
+      equity: offer.equity,
+      dealType: offer.dealType,
+      terms: offer.terms,
+      investor: offer.investor,
+      investorType: offer.investorType,
+      expiresAt: offer.expiresAt,
+    }));
 
     return NextResponse.json({
       pitch,

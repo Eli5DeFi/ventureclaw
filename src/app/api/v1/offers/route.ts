@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
+import { getOffersForPitch } from '@/lib/services/investment-offers';
 
 async function authenticateApiKey(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -81,40 +82,28 @@ export async function GET(request: Request) {
       });
     }
 
-    // TODO: Fetch real offers
-    // For now, generate mock offers based on analysis
-    const offers = [];
-    if (pitch.analysis && pitch.analysis.recommendation === 'APPROVED') {
-      offers.push({
-        id: 'offer_1',
-        pitchId: pitch.id,
-        amount: Math.floor(pitch.fundingAsk * 0.8),
-        equity: 15,
-        dealType: 'SAFE',
-        terms: '5M cap, 20% discount',
-        investor: 'AI Ventures',
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      });
-      
-      if (pitch.analysis.overallScore >= 85) {
-        offers.push({
-          id: 'offer_2',
-          pitchId: pitch.id,
-          amount: pitch.fundingAsk,
-          equity: 20,
-          dealType: 'Equity',
-          terms: 'Priced round at $5M post-money',
-          investor: 'Sequoia Capital',
-          expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-        });
-      }
-    }
+    // Get real investment offers
+    const offers = await getOffersForPitch(pitchId);
+
+    // Transform to API format (rename fields for consistency)
+    const apiOffers = offers.map(offer => ({
+      id: offer.id,
+      pitchId: offer.pitchId,
+      amount: offer.offerAmount,
+      equity: offer.equity,
+      dealType: offer.dealType,
+      terms: offer.terms,
+      investor: offer.investor,
+      investorType: offer.investorType,
+      expiresAt: offer.expiresAt,
+      status: offer.status,
+    }));
 
     return NextResponse.json({
       pitchId: pitch.id,
       pitchName: pitch.name,
-      offers,
-      count: offers.length,
+      offers: apiOffers,
+      count: apiOffers.length,
     });
   } catch (error) {
     logger.error('API v1 offers error:', error);

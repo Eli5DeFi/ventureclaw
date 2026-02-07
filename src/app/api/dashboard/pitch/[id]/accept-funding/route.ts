@@ -12,10 +12,11 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { logger } from '@/lib/logger';
+import { getOfferById, acceptOffer } from '@/lib/services/investment-offers';
 
 // Validation schema for offer acceptance
 const AcceptOfferSchema = z.object({
-  offerId: z.string().regex(/^offer_[12]$/, 'Invalid offer ID format'),
+  offerId: z.string().min(1, 'Offer ID is required'),
 });
 
 // UUID validation for pitch ID
@@ -80,20 +81,33 @@ export async function POST(
       );
     }
 
-    // TODO: Fetch real offer details
-    // For now, use mock offer data
-    const offerDataMap: Record<string, { amount: number; equity: number; dealType: string }> = {
-      offer_1: { amount: Math.floor(pitch.fundingAsk * 0.8), equity: 15, dealType: 'SAFE' },
-      offer_2: { amount: pitch.fundingAsk, equity: 20, dealType: 'Equity' },
-    };
-    const offerData = offerDataMap[offerId as string];
+    // Get real offer details
+    const offer = await getOfferById(pitch.id, offerId);
 
-    if (!offerData) {
-      return NextResponse.json({ error: 'Invalid offer ID' }, { status: 400 });
+    if (!offer) {
+      return NextResponse.json({ error: 'Invalid offer ID or offer not found' }, { status: 400 });
     }
 
-    // Create funding record with 5 milestones over 12 months
+    if (offer.status !== 'active') {
+      return NextResponse.json({ error: 'Offer is no longer active' }, { status: 400 });
+    }
+
+    // Check if offer has expired
     const now = new Date();
+    if (new Date(offer.expiresAt) < now) {
+      return NextResponse.json({ error: 'Offer has expired' }, { status: 400 });
+    }
+    
+    // Mark offer as accepted
+    await acceptOffer(pitch.id, offerId);
+    
+    const offerData = {
+      amount: offer.offerAmount,
+      equity: offer.equity,
+      dealType: offer.dealType,
+    };
+
+    // Create funding record with 5 milestones over 12 months
     const funding = await prisma.funding.create({
       data: {
         startupId: pitch.id,
